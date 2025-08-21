@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Homepage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 2em; }
+        nav a { margin-right: 1em; }
+        button, input[type="submit"] { padding: 0.5em 1em; cursor: pointer; }
+        form { border: 1px solid #ccc; padding: 1em; max-width: 300px; }
+        hr { margin: 2em 0; }
+    </style>
+    <script>
+    window.pageStartTime = performance.now();
+    </script>
+    <script type="text/javascript" src="http://localhost:8000/collect.js"></script>
+    <noscript>
+    <img src="http://localhost:8000/collect.gif" />
+    </noscript>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Test Website</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="page2.html">About Us</a>
+            <a href="page3.html">Products</a>
+        </nav>
+    </header>
+
+    <main>
+        <hr>
+        <p>This is the homepage. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.</p>
+        
+        <h2>Click Tracking Test</h2>
+        <button onclick="analytics.track({event_type: 'button_click', event_value: 'promo_button_homepage'})">Track Promotional Click</button>
+        <hr>
+
+        <h2>Form Submission Tracking</h2>
+        <form onsubmit="analytics.track({event_type: 'form_submission', form_name: 'contact_us_form'}); alert('Form data tracked!'); return false;">
+            <h3>Contact Us</h3>
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+            <input type="submit" value="Submit">
+        </form>
+    </main>
+</body>
+</html>

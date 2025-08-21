@@ -1,0 +1,16 @@
+app:
+  name: "Traffic Analytics"
+  version: "1.0.0"
+  timezone: "UTC"
+
+database:
+  type: "sqlite"
+  path: "./database.sqlite"
+
+security:
+  rate_limit_per_minute: 60
+  max_payload_size: 4000
+
+dashboard:
+  events_retention_hours: 168  # 7 days
+  chart_hours: 24

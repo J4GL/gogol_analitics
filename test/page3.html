@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Our Products</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 2em; }
+        nav a { margin-right: 1em; }
+        button { padding: 0.5em 1em; cursor: pointer; }
+        hr { margin: 2em 0; }
+    </style>
+    <script>
+    window.pageStartTime = performance.now();
+    </script>
+    <script type="text/javascript" src="http://localhost:8000/collect.js"></script>
+    <noscript>
+    <img src="http://localhost:8000/collect.gif" />
+    </noscript>
+</head>
+<body>
+    <header>
+        <h1>Our Products</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="page2.html">About Us</a>
+            <a href="page3.html">Products</a>
+        </nav>
+    </header>
+
+    <main>
+        <hr>
+        <p>This is the products page. Donec ullamcorper nulla non metus auctor fringilla.
+        </p>
+        
+        <h2>Click Tracking Test</h2>
+        <button onclick="analytics.track({event_type: 'button_click', event_value: 'buy_now_button'})">Track "Buy Now" Click</button>
+    </main>
+</body>
+</html>
