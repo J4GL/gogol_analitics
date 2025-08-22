@@ -1,0 +1,570 @@
+/* Fake Website Styles */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --info-color: #17a2b8;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+}
+
+/* Body and layout */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+}
+
+/* Navigation */
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.hero-image img {
+    transition: transform 0.3s ease;
+}
+
+.hero-image img:hover {
+    transform: scale(1.05);
+}
+
+/* Feature Cards */
+.feature-card {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: all 0.3s ease;
+    border: 1px solid #e3e6f0;
+    padding: 2rem;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+    margin-bottom: 1rem;
+}
+
+/* Service Cards */
+.service-card {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: all 0.3s ease;
+    border: 1px solid #e3e6f0;
+    padding: 2rem;
+    text-align: center;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.service-icon {
+    margin-bottom: 1.5rem;
+}
+
+.service-features {
+    text-align: left;
+    margin: 1.5rem 0;
+}
+
+.service-features ul {
+    list-style: none;
+    padding: 0;
+}
+
+.service-features li {
+    padding: 0.25rem 0;
+    color: var(--secondary-color);
+}
+
+.service-features li:before {
+    content: '✓';
+    color: var(--success-color);
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+/* Page Headers */
+.page-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #0056b3 100%);
+}
+
+.breadcrumb {
+    background: none;
+    padding: 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Content Blocks */
+.content-block {
+    margin-bottom: 2rem;
+}
+
+.content-block h3 {
+    color: var(--dark-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Classification Cards */
+.classification-card {
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.new-visitor {
+    background: linear-gradient(135deg, var(--success-color) 0%, #1e7e34 100%);
+}
+
+.returning-visitor {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #0056b3 100%);
+}
+
+.bot-visitor {
+    background: linear-gradient(135deg, var(--danger-color) 0%, #c82333 100%);
+}
+
+.classification-card h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.classification-card p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+/* Visitor Info */
+.visitor-info {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    border: 1px solid #dee2e6;
+}
+
+.info-item {
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.info-item:last-child {
+    margin-bottom: 0;
+}
+
+.info-item strong {
+    color: var(--dark-color);
+    min-width: 120px;
+}
+
+.info-item code {
+    background: #e9ecef;
+    color: var(--dark-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+
+/* Feature Highlights */
+.feature-highlight {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.feature-highlight h4 {
+    color: var(--dark-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Process Steps */
+.process-step {
+    position: relative;
+    padding: 2rem 1rem;
+}
+
+.step-number {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.step-icon {
+    margin-top: 2rem;
+}
+
+/* Spec Cards */
+.spec-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid #e3e6f0;
+    height: 100%;
+}
+
+.spec-card h4 {
+    color: var(--dark-color);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.spec-card ul li {
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+}
+
+/* Pricing Cards */
+.pricing-card {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid #e3e6f0;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.pricing-card.featured {
+    border-color: var(--primary-color);
+    border-width: 2px;
+}
+
+.featured-badge {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: white;
+    padding: 0.25rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.pricing-header h4 {
+    color: var(--dark-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.price {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.price .currency,
+.price .period {
+    font-size: 1rem;
+    color: var(--secondary-color);
+}
+
+.pricing-features {
+    margin: 2rem 0;
+}
+
+.pricing-features ul li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.pricing-features ul li:last-child {
+    border-bottom: none;
+}
+
+/* Comparison Table */
+.comparison-table th {
+    background: var(--light-color);
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.comparison-table td {
+    vertical-align: middle;
+    padding: 1rem;
+}
+
+/* Contact Cards */
+.contact-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid #e3e6f0;
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.contact-icon {
+    margin-bottom: 1.5rem;
+}
+
+.contact-card h4 {
+    color: var(--dark-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Map Placeholder */
+.map-placeholder {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 0.5rem;
+    padding: 4rem 2rem;
+    text-align: center;
+    border: 2px dashed #dee2e6;
+}
+
+.map-content h4 {
+    color: var(--dark-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Form Styles */
+.form-label {
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Buttons */
+.btn {
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.125rem;
+}
+
+/* Footer */
+.footer {
+    margin-top: auto;
+}
+
+.footer h5,
+.footer h6 {
+    font-weight: 600;
+}
+
+.footer a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: white !important;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Utility Classes */
+.text-truncate-custom {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section .display-4 {
+        font-size: 2rem;
+    }
+    
+    .process-step {
+        margin-bottom: 2rem;
+    }
+    
+    .step-number {
+        position: relative;
+        transform: none;
+        margin: 0 auto 1rem;
+    }
+    
+    .pricing-card {
+        margin-bottom: 2rem;
+    }
+    
+    .comparison-table {
+        font-size: 0.875rem;
+    }
+    
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .info-item strong {
+        min-width: auto;
+        margin-bottom: 0.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section {
+        padding: 3rem 0;
+    }
+    
+    .page-header {
+        padding: 3rem 0;
+    }
+    
+    .feature-card,
+    .service-card,
+    .contact-card {
+        padding: 1.5rem;
+    }
+    
+    .pricing-card {
+        padding: 1.5rem;
+    }
+    
+    .price {
+        font-size: 2rem;
+    }
+    
+    .btn-group-vertical .btn {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .feature-card,
+    .service-card,
+    .contact-card,
+    .pricing-card,
+    .spec-card {
+        background: #2d3748;
+        border-color: #4a5568;
+        color: #f7fafc;
+    }
+    
+    .visitor-info {
+        background: #2d3748;
+        border-color: #4a5568;
+        color: #f7fafc;
+    }
+    
+    .info-item code {
+        background: #4a5568;
+        color: #f7fafc;
+    }
+    
+    .comparison-table th {
+        background: #2d3748;
+        color: #f7fafc;
+    }
+    
+    .map-placeholder {
+        background: #2d3748;
+        border-color: #4a5568;
+        color: #f7fafc;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .navbar,
+    .footer,
+    .btn,
+    .cta-section {
+        display: none !important;
+    }
+    
+    .feature-card,
+    .service-card,
+    .contact-card {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+    }
+    
+    .page-header {
+        background: none !important;
+        color: black !important;
+    }
+}

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Demo Website | Learn About Our Tracking System</title>
+    <meta name="description" content="Learn more about our visitor tracking analytics system and how it helps businesses understand their website visitors.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/styles.css">
+    
+    <!-- Tracking Script -->
+    <script>
+      (function() {
+        var script = document.createElement('script');
+        script.src = '/assets/js/tracker.js';
+        script.setAttribute('data-api-url', '/api/track.php');
+        script.setAttribute('data-site-url', window.location.origin);
+        script.setAttribute('data-debug', 'true');
+        script.async = true;
+        document.head.appendChild(script);
+      })();
+    </script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-globe"></i> Demo Website
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="about.html">
+                            <i class="fas fa-info-circle"></i> About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="services.html">
+                            <i class="fas fa-cogs"></i> Services
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">
+                            <i class="fas fa-envelope"></i> Contact
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/" target="_blank">
+                            <i class="fas fa-chart-line"></i> View Analytics
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header bg-primary text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="display-4 fw-bold mb-3">
+                        <i class="fas fa-info-circle"></i> About Our System
+                    </h1>
+                    <p class="lead">
+                        Learn about our comprehensive visitor tracking and analytics platform
+                    </p>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item"><a href="index.html" class="text-white-50">Home</a></li>
+                            <li class="breadcrumb-item active text-white" aria-current="page">About</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Content -->
+    <section class="about-content py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="content-block mb-5">
+                        <h2 class="fw-bold mb-4">What is Gogol Analytics?</h2>
+                        <p class="lead">
+                            Gogol Analytics is a comprehensive visitor tracking and analytics platform designed 
+                            to provide deep insights into website visitor behavior and engagement patterns.
+                        </p>
+                        <p>
+                            Built with privacy and performance in mind, our system offers real-time tracking 
+                            capabilities while maintaining user anonymity and respecting privacy preferences. 
+                            The platform uses advanced visitor identification techniques to provide accurate 
+                            analytics without compromising user privacy.
+                        </p>
+                    </div>
+
+                    <div class="row g-4 mb-5">
+                        <div class="col-md-6">
+                            <div class="feature-highlight">
+                                <div class="feature-icon mb-3">
+                                    <i class="fas fa-rocket fa-3x text-primary"></i>
+                                </div>
+                                <h4>High Performance</h4>
+                                <p>
+                                    Lightweight tracking script with minimal impact on page load times. 
+                                    Optimized for speed and efficiency.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="feature-highlight">
+                                <div class="feature-icon mb-3">
+                                    <i class="fas fa-shield-alt fa-3x text-success"></i>
+                                </div>
+                                <h4>Privacy First</h4>
+                                <p>
+                                    IP addresses are hashed, no PII is stored, and Do Not Track preferences 
+                                    are respected automatically.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="feature-highlight">
+                                <div class="feature-icon mb-3">
+                                    <i class="fas fa-chart-line fa-3x text-info"></i>
+                                </div>
+                                <h4>Real-time Insights</h4>
+                                <p>
+                                    See visitor activity as it happens with live updates and real-time 
+                                    analytics dashboard.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="feature-highlight">
+                                <div class="feature-icon mb-3">
+                                    <i class="fas fa-cogs fa-3x text-warning"></i>
+                                </div>
+                                <h4>Easy Integration</h4>
+                                <p>
+                                    Simple one-line installation with automatic configuration and 
+                                    comprehensive tracking out of the box.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="fw-bold">How It Works</h2>
+                    <p class="lead text-muted">
+                        Understanding the visitor tracking process
+                    </p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="process-step text-center">
+                        <div class="step-number">1</div>
+                        <div class="step-icon mb-3">
+                            <i class="fas fa-code fa-2x text-primary"></i>
+                        </div>
+                        <h4>Installation</h4>
+                        <p>
+                            Add our lightweight tracking script to your website. 
+                            One line of code is all you need.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <div class="process-step text-center">
+                        <div class="step-number">2</div>
+                        <div class="step-icon mb-3">
+                            <i class="fas fa-user-tag fa-2x text-success"></i>
+                        </div>
+                        <h4>Visitor Identification</h4>
+                        <p>
+                            Each visitor gets a unique UUID for tracking while 
+                            maintaining complete anonymity.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <div class="process-step text-center">
+                        <div class="step-number">3</div>
+                        <div class="step-icon mb-3">
+                            <i class="fas fa-mouse-pointer fa-2x text-info"></i>
+                        </div>
+                        <h4>Event Tracking</h4>
+                        <p>
+                            Page views, clicks, scrolls, and custom events 
+                            are automatically tracked and recorded.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <div class="process-step text-center">
+                        <div class="step-number">4</div>
+                        <div class="step-icon mb-3">
+                            <i class="fas fa-chart-bar fa-2x text-warning"></i>
+                        </div>
+                        <h4>Analytics Dashboard</h4>
+                        <p>
+                            View comprehensive analytics with real-time updates 
+                            and detailed visitor insights.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Specifications -->
+    <section class="technical-specs py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="fw-bold mb-4 text-center">Technical Specifications</h2>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="spec-card">
+                                <h4><i class="fas fa-server"></i> Backend</h4>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success"></i> PHP 8.1+ for server-side processing</li>
+                                    <li><i class="fas fa-check text-success"></i> SQLite database for data storage</li>
+                                    <li><i class="fas fa-check text-success"></i> RESTful API architecture</li>
+                                    <li><i class="fas fa-check text-success"></i> Built-in rate limiting and security</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="spec-card">
+                                <h4><i class="fas fa-desktop"></i> Frontend</h4>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success"></i> Vanilla JavaScript tracking script</li>
+                                    <li><i class="fas fa-check text-success"></i> Chart.js for data visualization</li>
+                                    <li><i class="fas fa-check text-success"></i> Bootstrap 5 responsive design</li>
+                                    <li><i class="fas fa-check text-success"></i> Real-time dashboard updates</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="spec-card">
+                                <h4><i class="fas fa-database"></i> Data Storage</h4>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success"></i> Visitor identification with UUIDs</li>
+                                    <li><i class="fas fa-check text-success"></i> Event-based tracking system</li>
+                                    <li><i class="fas fa-check text-success"></i> Hashed IP addresses for privacy</li>
+                                    <li><i class="fas fa-check text-success"></i> Automatic data cleanup policies</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="spec-card">
+                                <h4><i class="fas fa-shield-alt"></i> Security & Privacy</h4>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success"></i> Do Not Track compliance</li>
+                                    <li><i class="fas fa-check text-success"></i> CORS configuration for cross-domain</li>
+                                    <li><i class="fas fa-check text-success"></i> Input validation and sanitization</li>
+                                    <li><i class="fas fa-check text-success"></i> No personally identifiable information</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section bg-primary text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="fw-bold mb-4">Ready to Try It Out?</h2>
+                    <p class="lead mb-4">
+                        Explore more pages to see the tracking system in action, or view the live analytics dashboard.
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <a href="services.html" class="btn btn-light btn-lg">
+                            <i class="fas fa-arrow-right"></i> Explore Services
+                        </a>
+                        <a href="contact.html" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-envelope"></i> Contact Us
+                        </a>
+                        <a href="/" class="btn btn-outline-light btn-lg" target="_blank">
+                            <i class="fas fa-chart-line"></i> View Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Elements for Testing -->
+    <section class="interactive-section py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-mouse"></i> Test Tracking Events
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Click these buttons to generate tracking events on this page:</p>
+                            
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" data-track="about-page-action" data-action="learn-more">
+                                    <i class="fas fa-info"></i> Learn More About Features
+                                </button>
+                                <button class="btn btn-success" data-track="about-page-action" data-action="get-started">
+                                    <i class="fas fa-play"></i> Get Started Now
+                                </button>
+                                <button class="btn btn-info" onclick="trackCustomEvent('about_page_engagement', {page: 'about', section: 'interactive'})">
+                                    <i class="fas fa-mouse-pointer"></i> Custom Event Test
+                                </button>
+                            </div>
+                            
+                            <hr>
+                            
+                            <div class="text-center">
+                                <small class="text-muted">
+                                    All interactions on this page are being tracked and will appear in the analytics dashboard.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-globe"></i> Demo Website</h5>
+                    <p class="text-muted">
+                        A demonstration website for visitor tracking analytics
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h6>Navigation</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-white-50">Home</a></li>
+                        <li><a href="about.html" class="text-white-50">About</a></li>
+                        <li><a href="services.html" class="text-white-50">Services</a></li>
+                        <li><a href="contact.html" class="text-white-50">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-white-50">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0 text-muted">
+                        &copy; 2024 Demo Website. Built for visitor tracking demonstration.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="assets/demo.js"></script>
+</body>
+</html>

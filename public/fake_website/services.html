@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Demo Website | Our Analytics Solutions</title>
+    <meta name="description" content="Discover our comprehensive analytics services and solutions for understanding visitor behavior and improving website performance.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/styles.css">
+    
+    <!-- Tracking Script -->
+    <script>
+      (function() {
+        var script = document.createElement('script');
+        script.src = '/assets/js/tracker.js';
+        script.setAttribute('data-api-url', '/api/track.php');
+        script.setAttribute('data-site-url', window.location.origin);
+        script.setAttribute('data-debug', 'true');
+        script.async = true;
+        document.head.appendChild(script);
+      })();
+    </script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-globe"></i> Demo Website
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">
+                            <i class="fas fa-info-circle"></i> About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="services.html">
+                            <i class="fas fa-cogs"></i> Services
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">
+                            <i class="fas fa-envelope"></i> Contact
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/" target="_blank">
+                            <i class="fas fa-chart-line"></i> View Analytics
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header bg-primary text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="display-4 fw-bold mb-3">
+                        <i class="fas fa-cogs"></i> Our Services
+                    </h1>
+                    <p class="lead">
+                        Comprehensive analytics solutions for modern websites
+                    </p>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item"><a href="index.html" class="text-white-50">Home</a></li>
+                            <li class="breadcrumb-item active text-white" aria-current="page">Services</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Overview -->
+    <section class="services-overview py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5">
+                    <h2 class="fw-bold">What We Offer</h2>
+                    <p class="lead text-muted">
+                        Our visitor tracking platform provides everything you need to understand 
+                        your website visitors and optimize their experience.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card h-100">
+                        <div class="service-icon">
+                            <i class="fas fa-chart-line fa-3x text-primary"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>Real-time Analytics</h4>
+                            <p>
+                                Monitor visitor activity as it happens with live updates, 
+                                real-time visitor counts, and instant event tracking.
+                            </p>
+                            <ul class="service-features">
+                                <li>Live visitor feed</li>
+                                <li>Real-time event tracking</li>
+                                <li>Active visitor counts</li>
+                                <li>Instant data updates</li>
+                            </ul>
+                            <button class="btn btn-outline-primary" data-track="service-interest" data-service="real-time-analytics">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card h-100">
+                        <div class="service-icon">
+                            <i class="fas fa-users fa-3x text-success"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>Visitor Intelligence</h4>
+                            <p>
+                                Advanced visitor classification and behavior analysis 
+                                to understand your audience better.
+                            </p>
+                            <ul class="service-features">
+                                <li>Visitor type classification</li>
+                                <li>Behavior pattern analysis</li>
+                                <li>Session tracking</li>
+                                <li>Return visitor identification</li>
+                            </ul>
+                            <button class="btn btn-outline-success" data-track="service-interest" data-service="visitor-intelligence">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card h-100">
+                        <div class="service-icon">
+                            <i class="fas fa-mouse-pointer fa-3x text-info"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>Event Tracking</h4>
+                            <p>
+                                Comprehensive tracking of user interactions including 
+                                clicks, scrolls, form submissions, and custom events.
+                            </p>
+                            <ul class="service-features">
+                                <li>Click event tracking</li>
+                                <li>Scroll behavior analysis</li>
+                                <li>Custom event support</li>
+                                <li>Form interaction tracking</li>
+                            </ul>
+                            <button class="btn btn-outline-info" data-track="service-interest" data-service="event-tracking">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card h-100">
+                        <div class="service-icon">
+                            <i class="fas fa-file-alt fa-3x text-warning"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>Page Analytics</h4>
+                            <p>
+                                Detailed page performance metrics including views, 
+                                unique visitors, bounce rates, and engagement patterns.
+                            </p>
+                            <ul class="service-features">
+                                <li>Page view statistics</li>
+                                <li>Unique visitor counts</li>
+                                <li>Bounce rate analysis</li>
+                                <li>Content performance metrics</li>
+                            </ul>
+                            <button class="btn btn-outline-warning" data-track="service-interest" data-service="page-analytics">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card h-100">
+                        <div class="service-icon">
+                            <i class="fas fa-external-link-alt fa-3x text-danger"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>Referrer Analysis</h4>
+                            <p>
+                                Track where your visitors come from with detailed 
+                                referrer analysis and traffic source identification.
+                            </p>
+                            <ul class="service-features">
+                                <li>Traffic source tracking</li>
+                                <li>Referrer domain analysis</li>
+                                <li>Campaign attribution</li>
+                                <li>Social media tracking</li>
+                            </ul>
+                            <button class="btn btn-outline-danger" data-track="service-interest" data-service="referrer-analysis">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card h-100">
+                        <div class="service-icon">
+                            <i class="fas fa-shield-alt fa-3x text-secondary"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>Privacy Protection</h4>
+                            <p>
+                                Built-in privacy features including IP hashing, 
+                                Do Not Track compliance, and GDPR-friendly data handling.
+                            </p>
+                            <ul class="service-features">
+                                <li>IP address anonymization</li>
+                                <li>Do Not Track compliance</li>
+                                <li>No PII collection</li>
+                                <li>Data retention policies</li>
+                            </ul>
+                            <button class="btn btn-outline-secondary" data-track="service-interest" data-service="privacy-protection">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="fw-bold">Simple Pricing</h2>
+                    <p class="lead text-muted">
+                        Choose the plan that fits your needs
+                    </p>
+                </div>
+            </div>
+            
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-4 col-md-6">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h4>Starter</h4>
+                            <div class="price">
+                                <span class="currency">$</span>
+                                <span class="amount">0</span>
+                                <span class="period">/month</span>
+                            </div>
+                            <p class="text-muted">Perfect for small websites</p>
+                        </div>
+                        <div class="pricing-features">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Up to 10,000 page views</li>
+                                <li><i class="fas fa-check text-success"></i> Basic analytics dashboard</li>
+                                <li><i class="fas fa-check text-success"></i> Real-time visitor tracking</li>
+                                <li><i class="fas fa-check text-success"></i> 30-day data retention</li>
+                                <li><i class="fas fa-times text-danger"></i> Custom events</li>
+                                <li><i class="fas fa-times text-danger"></i> API access</li>
+                            </ul>
+                        </div>
+                        <div class="pricing-footer">
+                            <button class="btn btn-outline-primary w-100" data-track="pricing-click" data-plan="starter">
+                                Get Started Free
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="pricing-card featured">
+                        <div class="featured-badge">Most Popular</div>
+                        <div class="pricing-header">
+                            <h4>Professional</h4>
+                            <div class="price">
+                                <span class="currency">$</span>
+                                <span class="amount">29</span>
+                                <span class="period">/month</span>
+                            </div>
+                            <p class="text-muted">For growing businesses</p>
+                        </div>
+                        <div class="pricing-features">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Up to 100,000 page views</li>
+                                <li><i class="fas fa-check text-success"></i> Advanced analytics dashboard</li>
+                                <li><i class="fas fa-check text-success"></i> Real-time visitor tracking</li>
+                                <li><i class="fas fa-check text-success"></i> 90-day data retention</li>
+                                <li><i class="fas fa-check text-success"></i> Custom events</li>
+                                <li><i class="fas fa-check text-success"></i> API access</li>
+                            </ul>
+                        </div>
+                        <div class="pricing-footer">
+                            <button class="btn btn-primary w-100" data-track="pricing-click" data-plan="professional">
+                                Start Free Trial
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h4>Enterprise</h4>
+                            <div class="price">
+                                <span class="currency">$</span>
+                                <span class="amount">99</span>
+                                <span class="period">/month</span>
+                            </div>
+                            <p class="text-muted">For large organizations</p>
+                        </div>
+                        <div class="pricing-features">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Unlimited page views</li>
+                                <li><i class="fas fa-check text-success"></i> Advanced analytics dashboard</li>
+                                <li><i class="fas fa-check text-success"></i> Real-time visitor tracking</li>
+                                <li><i class="fas fa-check text-success"></i> 1-year data retention</li>
+                                <li><i class="fas fa-check text-success"></i> Custom events</li>
+                                <li><i class="fas fa-check text-success"></i> Full API access</li>
+                            </ul>
+                        </div>
+                        <div class="pricing-footer">
+                            <button class="btn btn-outline-primary w-100" data-track="pricing-click" data-plan="enterprise">
+                                Contact Sales
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Comparison -->
+    <section class="features-comparison py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="fw-bold">Feature Comparison</h2>
+                    <p class="lead text-muted">
+                        See what's included in each plan
+                    </p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table table-hover comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th class="text-center">Starter</th>
+                                    <th class="text-center">Professional</th>
+                                    <th class="text-center">Enterprise</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><i class="fas fa-eye"></i> Page Views</td>
+                                    <td class="text-center">10,000/month</td>
+                                    <td class="text-center">100,000/month</td>
+                                    <td class="text-center">Unlimited</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-chart-line"></i> Real-time Analytics</td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-users"></i> Visitor Tracking</td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-mouse-pointer"></i> Event Tracking</td>
+                                    <td class="text-center"><i class="fas fa-times text-danger"></i></td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-code"></i> API Access</td>
+                                    <td class="text-center"><i class="fas fa-times text-danger"></i></td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-database"></i> Data Retention</td>
+                                    <td class="text-center">30 days</td>
+                                    <td class="text-center">90 days</td>
+                                    <td class="text-center">1 year</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-headset"></i> Support</td>
+                                    <td class="text-center">Community</td>
+                                    <td class="text-center">Email</td>
+                                    <td class="text-center">Priority</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section bg-primary text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="fw-bold mb-4">Ready to Get Started?</h2>
+                    <p class="lead mb-4">
+                        Start tracking your website visitors today with our comprehensive analytics platform.
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <button class="btn btn-light btn-lg" data-track="cta-click" data-action="start-free-trial">
+                            <i class="fas fa-rocket"></i> Start Free Trial
+                        </button>
+                        <a href="contact.html" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-envelope"></i> Contact Sales
+                        </a>
+                        <a href="/" class="btn btn-outline-light btn-lg" target="_blank">
+                            <i class="fas fa-chart-line"></i> View Demo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-globe"></i> Demo Website</h5>
+                    <p class="text-muted">
+                        A demonstration website for visitor tracking analytics
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h6>Navigation</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-white-50">Home</a></li>
+                        <li><a href="about.html" class="text-white-50">About</a></li>
+                        <li><a href="services.html" class="text-white-50">Services</a></li>
+                        <li><a href="contact.html" class="text-white-50">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-white-50">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0 text-muted">
+                        &copy; 2024 Demo Website. Built for visitor tracking demonstration.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="assets/demo.js"></script>
+</body>
+</html>

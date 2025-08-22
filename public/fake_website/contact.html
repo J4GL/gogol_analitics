@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Demo Website | Get in Touch</title>
+    <meta name="description" content="Contact us to learn more about our visitor tracking analytics platform. We're here to help you understand your website visitors better.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/styles.css">
+    
+    <!-- Tracking Script -->
+    <script>
+      (function() {
+        var script = document.createElement('script');
+        script.src = '/assets/js/tracker.js';
+        script.setAttribute('data-api-url', '/api/track.php');
+        script.setAttribute('data-site-url', window.location.origin);
+        script.setAttribute('data-debug', 'true');
+        script.async = true;
+        document.head.appendChild(script);
+      })();
+    </script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-globe"></i> Demo Website
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">
+                            <i class="fas fa-info-circle"></i> About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="services.html">
+                            <i class="fas fa-cogs"></i> Services
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="contact.html">
+                            <i class="fas fa-envelope"></i> Contact
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/" target="_blank">
+                            <i class="fas fa-chart-line"></i> View Analytics
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header bg-primary text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="display-4 fw-bold mb-3">
+                        <i class="fas fa-envelope"></i> Contact Us
+                    </h1>
+                    <p class="lead">
+                        Get in touch with our team to learn more about our analytics platform
+                    </p>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item"><a href="index.html" class="text-white-50">Home</a></li>
+                            <li class="breadcrumb-item active text-white" aria-current="page">Contact</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Information -->
+    <section class="contact-info py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="contact-card text-center">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope fa-3x text-primary"></i>
+                        </div>
+                        <h4>Email Us</h4>
+                        <p class="text-muted">Send us an email and we'll get back to you within 24 hours.</p>
+                        <a href="mailto:info@demowebsite.com" class="btn btn-outline-primary" data-track="contact-method" data-method="email">
+                            info@demowebsite.com
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="contact-card text-center">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone fa-3x text-success"></i>
+                        </div>
+                        <h4>Call Us</h4>
+                        <p class="text-muted">Speak directly with our team during business hours.</p>
+                        <a href="tel:+1234567890" class="btn btn-outline-success" data-track="contact-method" data-method="phone">
+                            +1 (234) 567-8900
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="contact-card text-center">
+                        <div class="contact-icon">
+                            <i class="fas fa-comments fa-3x text-info"></i>
+                        </div>
+                        <h4>Live Chat</h4>
+                        <p class="text-muted">Chat with our support team in real-time.</p>
+                        <button class="btn btn-outline-info" data-track="contact-method" data-method="chat" onclick="startLiveChat()">
+                            Start Chat
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="contact-form bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">
+                                <i class="fas fa-paper-plane"></i> Send us a Message
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="contact-form">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="firstName" class="form-label">First Name *</label>
+                                        <input type="text" class="form-control" id="firstName" name="firstName" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lastName" class="form-label">Last Name *</label>
+                                        <input type="text" class="form-control" id="lastName" name="lastName" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="email" class="form-label">Email Address *</label>
+                                        <input type="email" class="form-control" id="email" name="email" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="phone" class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" id="phone" name="phone">
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="company" class="form-label">Company</label>
+                                        <input type="text" class="form-control" id="company" name="company">
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="subject" class="form-label">Subject *</label>
+                                        <select class="form-select" id="subject" name="subject" required>
+                                            <option value="">Choose a subject...</option>
+                                            <option value="general">General Inquiry</option>
+                                            <option value="demo">Request Demo</option>
+                                            <option value="pricing">Pricing Information</option>
+                                            <option value="technical">Technical Support</option>
+                                            <option value="partnership">Partnership Opportunities</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="message" class="form-label">Message *</label>
+                                        <textarea class="form-control" id="message" name="message" rows="5" 
+                                                  placeholder="Tell us more about your needs or questions..." required></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter">
+                                            <label class="form-check-label" for="newsletter">
+                                                Subscribe to our newsletter for updates and analytics tips
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="privacy" name="privacy" required>
+                                            <label class="form-check-label" for="privacy">
+                                                I agree to the <a href="#" data-track="link-click" data-link="privacy-policy">Privacy Policy</a> 
+                                                and <a href="#" data-track="link-click" data-link="terms-of-service">Terms of Service</a> *
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary btn-lg" data-track="form-submit" data-form="contact">
+                                            <i class="fas fa-paper-plane"></i> Send Message
+                                        </button>
+                                        <button type="reset" class="btn btn-outline-secondary btn-lg ms-2" data-track="form-reset" data-form="contact">
+                                            <i class="fas fa-undo"></i> Reset Form
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="fw-bold">Frequently Asked Questions</h2>
+                    <p class="lead text-muted">
+                        Common questions about our analytics platform
+                    </p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#faq1" data-track="faq-click" data-question="implementation">
+                                    How easy is it to implement the tracking code?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Implementation is extremely simple. Just add one line of JavaScript code to your website's 
+                                    header, and you're done! Our system automatically starts tracking visitors, events, and 
+                                    providing analytics within minutes.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#faq2" data-track="faq-click" data-question="privacy">
+                                    How do you handle visitor privacy?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Privacy is our top priority. We hash all IP addresses, don't collect any personally 
+                                    identifiable information, respect Do Not Track settings, and provide clear opt-out 
+                                    mechanisms. Our system is designed to be GDPR compliant from the ground up.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#faq3" data-track="faq-click" data-question="real-time">
+                                    Is the data really updated in real-time?
+                                </button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Yes! Our system processes events as they happen and updates the dashboard within seconds. 
+                                    You can see visitors arriving, pages being viewed, and interactions happening live on 
+                                    your analytics dashboard.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#faq4" data-track="faq-click" data-question="custom-events">
+                                    Can I track custom events?
+                                </button>
+                            </h2>
+                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Absolutely! Our tracking system supports custom events, allowing you to track specific 
+                                    actions that matter to your business. You can track button clicks, form submissions, 
+                                    video plays, downloads, or any other custom interaction.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#faq5" data-track="faq-click" data-question="pricing">
+                                    Is there a free tier available?
+                                </button>
+                            </h2>
+                            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Yes! We offer a free Starter plan that includes up to 10,000 page views per month, 
+                                    basic analytics, and real-time visitor tracking. It's perfect for small websites 
+                                    and personal projects.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section (Demo) -->
+    <section class="map-section py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-4">
+                    <h2 class="fw-bold">Our Location</h2>
+                    <p class="text-muted">Visit us at our headquarters</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="map-placeholder">
+                        <div class="map-content">
+                            <i class="fas fa-map-marker-alt fa-3x text-primary mb-3"></i>
+                            <h4>Demo Analytics HQ</h4>
+                            <p class="text-muted">
+                                123 Analytics Street<br>
+                                Tech City, TC 12345<br>
+                                United States
+                            </p>
+                            <button class="btn btn-primary" data-track="map-interaction" data-action="get-directions">
+                                <i class="fas fa-directions"></i> Get Directions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section bg-primary text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="fw-bold mb-4">Ready to Start Tracking?</h2>
+                    <p class="lead mb-4">
+                        Join thousands of websites already using our analytics platform to understand their visitors better.
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <button class="btn btn-light btn-lg" data-track="cta-click" data-action="start-now">
+                            <i class="fas fa-rocket"></i> Start Now
+                        </button>
+                        <a href="/" class="btn btn-outline-light btn-lg" target="_blank">
+                            <i class="fas fa-chart-line"></i> View Live Demo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-globe"></i> Demo Website</h5>
+                    <p class="text-muted">
+                        A demonstration website for visitor tracking analytics
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h6>Navigation</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-white-50">Home</a></li>
+                        <li><a href="about.html" class="text-white-50">About</a></li>
+                        <li><a href="services.html" class="text-white-50">Services</a></li>
+                        <li><a href="contact.html" class="text-white-50">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-white-50">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0 text-muted">
+                        &copy; 2024 Demo Website. Built for visitor tracking demonstration.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="assets/demo.js"></script>
+</body>
+</html>

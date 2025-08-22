@@ -1,0 +1,36 @@
+{
+    "name": "gogol-analitics/visitor-tracking-dashboard",
+    "description": "PHP-based web application for tracking website visitors with real-time analytics",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "ext-sqlite3": "*",
+        "ext-pdo": "*",
+        "ext-json": "*",
+        "ramsey/uuid": "^4.7"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "VisitorTracking\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "VisitorTracking\\Tests\\": "tests/unit/php/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "serve": "php -S localhost:8000 -t public"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
