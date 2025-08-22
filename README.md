@@ -35,8 +35,64 @@ A comprehensive PHP-based web application for tracking website visitors with rea
 - PHP 8.1 or higher
 - SQLite extension
 - Composer
+- Node.js 16+ (optional, for testing)
+
+### Automated Setup (Recommended)
+
+The easiest way to set up the project is using the provided setup script:
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd gogol_analitics
+
+# Run the setup script
+./setup.sh
+```
+
+**Setup Script Options:**
+```bash
+./setup.sh              # Standard setup
+./setup.sh --help       # Show help information
+./setup.sh --dev        # Include development dependencies
+./setup.sh --prod       # Production mode (minimal dependencies)
+./setup.sh --no-test    # Skip test dependencies
+```
+
+The setup script will:
+- ✅ Validate system requirements
+- ✅ Install PHP and Node.js dependencies
+- ✅ Initialize the SQLite database
+- ✅ Set proper file permissions
+- ✅ Test the configuration
+- ✅ Provide next steps
+
+### Manual Setup
+
+If you prefer to set up manually:
+
+### Prerequisites
+- PHP 8.1 or higher
+- SQLite extension
+- Composer
 
 ### Quick Start
+
+1. **Run the automated setup**
+   ```bash
+   ./setup.sh
+   ```
+
+2. **Start the development server**
+   ```bash
+   php -S localhost:8000 -t public
+   ```
+
+3. **Access the application**
+   - Dashboard: `http://localhost:8000`
+   - Test website: `http://localhost:8000/fake_website/`
+
+### Manual Setup (Alternative)
 
 1. **Clone the repository**
    ```bash
