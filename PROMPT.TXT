@@ -1,0 +1,8 @@
+I want a wep app (with php & sqlite) to track visitors on my website, i want to start simple with a dashboard with two tab:First tab Traffic
+with a stacked bar chart to view the number of visitors (only uniq view),returning visitors and bots 
+(bot at the bottom in red,new visitor in the middle in green and returning visitor at the top in blue) and next to it a litle table to see visitor comming
+to my website in live with time,page view and event tracked (on mouse over each line show (without delay a tooltip with all data gathered).
+The second tab will be setting where you will put a script snippet linking to the javascript code that will handle event tracking.
+Also make a small web site in a folder named "fake_website" to test it, use playwright for the e2e test.
+Gather this data for each event: 
+Timestamp (milisecond),ID (ip+user agent hash),Event_Type,Page,Referrer,Country (get from the 2 letters country code in javascript local() ),OS,Browser,Device_Type(PC,MOBILE),Resolution,Timezone,Page Load (load time in ms),isBot (if user agent match known crawler/bots),User Agent

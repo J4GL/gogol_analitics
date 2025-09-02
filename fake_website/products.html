@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Test Website</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">TestSite</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>Our Products</h1>
+            <p class="subtitle">Explore our range of testing solutions</p>
+        </div>
+
+        <div class="products-grid">
+            <div class="product-card">
+                <h3>Analytics Tracker</h3>
+                <p>Advanced visitor tracking with real-time insights</p>
+                <button onclick="gogol.trackEvent('product_click', {product: 'analytics'})">Learn More</button>
+            </div>
+            
+            <div class="product-card">
+                <h3>Dashboard Pro</h3>
+                <p>Comprehensive analytics dashboard with custom reports</p>
+                <button onclick="gogol.trackEvent('product_click', {product: 'dashboard'})">Learn More</button>
+            </div>
+            
+            <div class="product-card">
+                <h3>Privacy Shield</h3>
+                <p>GDPR-compliant tracking solution</p>
+                <button onclick="gogol.trackEvent('product_click', {product: 'privacy'})">Learn More</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 TestSite. All rights reserved. | Tracked by Gogol Analytics</p>
+    </footer>
+
+    <!-- Gogol Analytics Tracking Code -->
+    <script>
+    (function() {
+        window.GOGOL_API_URL = '/api/collect';
+        var script = document.createElement('script');
+        script.src = '/assets/js/tracker.js';
+        script.async = true;
+        document.head.appendChild(script);
+    })();
+    </script>
+    <!-- End Gogol Analytics -->
+</body>
+</html>

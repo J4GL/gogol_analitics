@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Test Website</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">TestSite</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>About Us</h1>
+            <p class="subtitle">Learn more about our mission and values</p>
+        </div>
+
+        <div class="content">
+            <h2>Our Story</h2>
+            <p>Founded in 2024, TestSite is dedicated to providing excellent testing environments for analytics solutions. We believe in the power of data-driven decisions and the importance of privacy-first analytics.</p>
+            
+            <h2>Our Mission</h2>
+            <p>To create simple, effective testing environments that help developers validate their analytics implementations quickly and efficiently.</p>
+            
+            <h2>Our Values</h2>
+            <ul>
+                <li>Privacy First</li>
+                <li>Data Accuracy</li>
+                <li>User Experience</li>
+                <li>Innovation</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 TestSite. All rights reserved. | Tracked by Gogol Analytics</p>
+    </footer>
+
+    <!-- Gogol Analytics Tracking Code -->
+    <script>
+    (function() {
+        window.GOGOL_API_URL = '/api/collect';
+        var script = document.createElement('script');
+        script.src = '/assets/js/tracker.js';
+        script.async = true;
+        document.head.appendChild(script);
+    })();
+    </script>
+    <!-- End Gogol Analytics -->
+</body>
+</html>
