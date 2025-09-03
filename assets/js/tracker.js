@@ -3,7 +3,7 @@
     
     // Configuration
     const GOGOL_CONFIG = {
-        apiUrl: window.GOGOL_API_URL || '/api/collect.php',
+        apiUrl: window.GOGOL_API_URL || '/collect.php',
         debug: false
     };
     
@@ -28,14 +28,17 @@
     
     function getIPFingerprint() {
         // Since we can't get IP on client-side, we'll use other unique identifiers
+        // Give more weight to user agent to ensure different browsers/bots get different IDs
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         ctx.textBaseline = 'top';
         ctx.font = '14px Arial';
         ctx.fillText('Gogol Analytics', 2, 2);
         
+        // Put user agent twice to give it more weight in the hash
         return generateHash(
-            navigator.userAgent +
+            navigator.userAgent + '|' +
+            navigator.userAgent + '|' +
             navigator.language +
             screen.width + 'x' + screen.height +
             new Date().getTimezoneOffset() +
@@ -126,10 +129,18 @@
         
         generateVisitorId() {
             // Create a persistent visitor ID based on browser fingerprint
-            let stored = this.getStoredId('gogol_visitor_id');
-            if (!stored) {
+            // Check if we have a stored ID with matching user agent
+            const storageKey = 'gogol_visitor_id';
+            const uaKey = 'gogol_visitor_ua';
+            
+            let stored = this.getStoredId(storageKey);
+            let storedUA = this.getStoredId(uaKey);
+            
+            // If user agent changed or no stored ID, generate new one
+            if (!stored || storedUA !== navigator.userAgent) {
                 stored = getIPFingerprint();
-                this.setStoredId('gogol_visitor_id', stored);
+                this.setStoredId(storageKey, stored);
+                this.setStoredId(uaKey, navigator.userAgent);
             }
             return stored;
         }

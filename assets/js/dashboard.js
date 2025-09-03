@@ -19,47 +19,59 @@ class GogolDashboard {
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabPanels = document.querySelectorAll('.tab-panel');
 
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const targetTab = button.dataset.tab;
-                
-                // Update active button
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                
-                // Update active panel
-                tabPanels.forEach(panel => panel.classList.remove('active'));
-                document.getElementById(targetTab).classList.add('active');
+        // Only set up if tabs exist
+        if (tabButtons.length > 0 && tabPanels.length > 0) {
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.dataset.tab;
+                    
+                    // Update active button
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // Update active panel
+                    tabPanels.forEach(panel => panel.classList.remove('active'));
+                    const targetPanel = document.getElementById(targetTab);
+                    if (targetPanel) {
+                        targetPanel.classList.add('active');
+                    }
+                });
             });
-        });
+        }
     }
 
     setupTimeframeSelector() {
-        const timeframeSelect = document.getElementById('timeframe');
-        timeframeSelect.addEventListener('change', () => {
-            this.loadDashboardData();
-        });
+        const timeframeSelect = document.getElementById('timeRange');
+        if (timeframeSelect) {
+            timeframeSelect.addEventListener('change', () => {
+                this.loadDashboardData();
+            });
+        }
     }
 
     setupCopyButton() {
         const copyButton = document.getElementById('copyCode');
         const codeElement = document.getElementById('trackingCode');
         
-        copyButton.addEventListener('click', () => {
-            const text = codeElement.textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                copyButton.textContent = 'Copied!';
-                copyButton.classList.add('copied');
-                setTimeout(() => {
-                    copyButton.textContent = 'Copy Code';
-                    copyButton.classList.remove('copied');
-                }, 2000);
+        // Only set up if both elements exist
+        if (copyButton && codeElement) {
+            copyButton.addEventListener('click', () => {
+                const text = codeElement.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    copyButton.textContent = 'Copied!';
+                    copyButton.classList.add('copied');
+                    setTimeout(() => {
+                        copyButton.textContent = 'Copy Code';
+                        copyButton.classList.remove('copied');
+                    }, 2000);
+                });
             });
-        });
+        }
     }
 
     async loadDashboardData() {
-        const timeframe = document.getElementById('timeframe').value;
+        const timeframeElement = document.getElementById('timeRange') || document.getElementById('timeframe');
+        const timeframe = timeframeElement ? timeframeElement.value : '24h';
         
         try {
             // Load stats
@@ -78,42 +90,63 @@ class GogolDashboard {
 
     async loadStats(timeframe) {
         const response = await fetch(`api/dashboard?action=stats&timeframe=${timeframe}`);
+        if (!response.ok) {
+            console.error('Failed to load stats:', response.status, response.statusText);
+            return;
+        }
         const data = await response.json();
+        console.log('Loaded stats:', data.stats);
         
-        // Update stat cards
-        document.getElementById('total-visitors').textContent = 
-            parseInt(data.stats.unique_visitors || 0).toLocaleString();
-        document.getElementById('new-visitors').textContent = 
-            parseInt(data.stats.new_visitors || 0).toLocaleString();
-        document.getElementById('returning-visitors').textContent = 
-            parseInt(data.stats.returning_visitors || 0).toLocaleString();
-        document.getElementById('bots').textContent = 
-            parseInt(data.stats.bots || 0).toLocaleString();
+        // Update stat cards - handle both camelCase and kebab-case IDs
+        const totalVisitors = parseInt(data.stats.total_visitors || 0);
+        const bots = parseInt(data.stats.bots || 0);
         
-        // Update top pages
+        // Try both ID formats for compatibility
+        const updateElement = (id1, id2, value) => {
+            const el = document.getElementById(id1) || document.getElementById(id2);
+            if (el) el.textContent = value;
+        };
+        
+        updateElement('uniqueVisitors', 'unique-visitors', totalVisitors.toLocaleString());
+        updateElement('totalVisitors', 'total-visitors', totalVisitors.toLocaleString()); // Show actual total
+        updateElement('newVisitors', 'new-visitors', parseInt(data.stats.new_visitors || 0).toLocaleString());
+        updateElement('returningVisitors', 'returning-visitors', parseInt(data.stats.returning_visitors || 0).toLocaleString());
+        updateElement('bots', 'bots', parseInt(data.stats.bots || 0).toLocaleString());
+        
+        // Also update total page views if available
+        if (document.getElementById('totalPageViews') && data.stats.total_events) {
+            document.getElementById('totalPageViews').textContent = 
+                parseInt(data.stats.total_events || 0).toLocaleString();
+        }
+        
+        // Update top pages if element exists
         const topPagesList = document.getElementById('topPagesList');
-        topPagesList.innerHTML = '';
-        data.top_pages.forEach(page => {
-            const li = document.createElement('li');
-            const url = new URL(page.page);
-            li.innerHTML = `
-                <span>${url.pathname}</span>
-                <span>${page.views}</span>
-            `;
-            topPagesList.appendChild(li);
-        });
+        if (topPagesList) {
+            topPagesList.innerHTML = '';
+            data.top_pages.forEach(page => {
+                const li = document.createElement('li');
+                const url = new URL(page.page);
+                li.innerHTML = `
+                    <span>${url.pathname}</span>
+                    <span>${page.views}</span>
+                `;
+                topPagesList.appendChild(li);
+            });
+        }
         
-        // Update top referrers
+        // Update top referrers if element exists
         const topReferrersList = document.getElementById('topReferrersList');
-        topReferrersList.innerHTML = '';
-        data.top_referrers.forEach(referrer => {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <span>${referrer.referrer_domain}</span>
-                <span>${referrer.visits}</span>
-            `;
-            topReferrersList.appendChild(li);
-        });
+        if (topReferrersList) {
+            topReferrersList.innerHTML = '';
+            data.top_referrers.forEach(referrer => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${referrer.referrer_domain}</span>
+                    <span>${referrer.visits}</span>
+                `;
+                topReferrersList.appendChild(li);
+            });
+        }
     }
 
     async loadChartData(timeframe) {
@@ -124,11 +157,18 @@ class GogolDashboard {
     }
 
     updateChart(chartData) {
-        const ctx = document.getElementById('visitorChart').getContext('2d');
+        // Try both possible canvas IDs
+        const canvas = document.getElementById('trafficChart') || document.getElementById('visitorChart');
+        if (!canvas) {
+            console.error('Chart canvas not found');
+            return;
+        }
+        const ctx = canvas.getContext('2d');
         
         // Prepare data for stacked bar chart
         const labels = chartData.map(item => {
-            const timeframe = document.getElementById('timeframe').value;
+            const timeframeElement = document.getElementById('timeRange') || document.getElementById('timeframe');
+            const timeframe = timeframeElement ? timeframeElement.value : '24h';
             
             if (timeframe === '24h') {
                 // Parse hour format: "2024-01-15 14" -> show as "14h"
@@ -223,6 +263,7 @@ class GogolDashboard {
 
     updateLiveTable(visitors) {
         const tbody = document.getElementById('liveTableBody');
+        if (!tbody) return;
         tbody.innerHTML = '';
         
         visitors.slice(0, 50).forEach((visitor, index) => {
@@ -343,8 +384,11 @@ class GogolDashboard {
         // Refresh every 10 seconds
         this.refreshInterval = setInterval(() => {
             this.loadLiveVisitors();
-            const timeframe = document.getElementById('timeframe').value;
+            const timeframeElement = document.getElementById('timeRange') || document.getElementById('timeframe');
+            const timeframe = timeframeElement ? timeframeElement.value : '24h';
             this.loadStats(timeframe);
+            // Also refresh the chart to show new visitors
+            this.loadChartData(timeframe);
         }, 10000);
     }
 

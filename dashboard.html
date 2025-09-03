@@ -1,0 +1,95 @@
+<!--
+Dashboard url is http://localhost:8080/ not http://localhost:8080/dashboard.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gogol Analytics Dashboard</title>
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Gogol Analytics Dashboard</h1>
+        <div class="time-range-selector">
+            <select id="timeRange">
+                <option value="1h">Last Hour</option>
+                <option value="24h" selected>Last 24 Hours</option>
+                <option value="7d">Last 7 Days</option>
+                <option value="30d">Last 30 Days</option>
+            </select>
+        </div>
+    </header>
+    
+    <main>
+        <section class="stats-overview">
+            <div class="stat-card">
+                <h3>Unique Visitors</h3>
+                <div class="stat-value" id="uniqueVisitors">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>New Visitors</h3>
+                <div class="stat-value" id="newVisitors">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Returning Visitors</h3>
+                <div class="stat-value" id="returningVisitors">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Bots</h3>
+                <div class="stat-value" id="bots">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Page Views</h3>
+                <div class="stat-value" id="totalPageViews">0</div>
+            </div>
+        </section>
+        
+        <section class="charts">
+            <div class="chart-container">
+                <h3>Traffic Over Time</h3>
+                <canvas id="trafficChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Device Types</h3>
+                <canvas id="deviceChart"></canvas>
+            </div>
+        </section>
+        
+        <section class="tables">
+            <div class="table-container">
+                <h3>Top Pages</h3>
+                <table id="topPagesTable">
+                    <thead>
+                        <tr>
+                            <th>Page</th>
+                            <th>Views</th>
+                            <th>Unique Visitors</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            
+            <div class="table-container">
+                <h3>Top Referrers</h3>
+                <table id="topReferrersTable">
+                    <thead>
+                        <tr>
+                            <th>Referrer</th>
+                            <th>Visits</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script src="assets/js/dashboard.js"></script>
+</body>
+</html>

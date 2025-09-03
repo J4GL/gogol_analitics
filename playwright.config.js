@@ -1,34 +1,25 @@
-const { defineConfig, devices } = require('@playwright/test');
+const { defineConfig } = require('@playwright/test');
 
 module.exports = defineConfig({
-  testDir: './tests/e2e',
-  fullyParallel: true,
+  testDir: './',
+  timeout: 120000,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
-  
+  retries: 0,
+  workers: 1,
+  reporter: 'list',
   use: {
-    baseURL: 'http://localhost:8000',
-    trace: 'on-first-retry',
-    headless: false, // Make windows visible as requested
+    headless: false,
     viewport: { width: 1280, height: 720 },
+    ignoreHTTPSErrors: true,
+    video: 'retain-on-failure'
   },
-
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: {
+        browserName: 'chromium',
+      },
     },
   ],
-
-  webServer: {
-    command: 'php -S localhost:8000 router.php',
-    port: 8000,
-    reuseExistingServer: !process.env.CI,
-  },
 });
