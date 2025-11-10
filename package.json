@@ -1,0 +1,26 @@
+{
+  "name": "gogol-analytics",
+  "version": "1.0.0",
+  "description": "Web analytics dashboard with real-time visitor tracking",
+  "main": "backend/server.js",
+  "type": "module",
+  "scripts": {
+    "dev:backend": "node backend/server.js",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "start": "node backend/server.js",
+    "test:e2e": "cd tests/e2e && npm test"
+  },
+  "keywords": ["analytics", "tracking", "dashboard"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^11.5.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "express-rate-limit": "^7.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
