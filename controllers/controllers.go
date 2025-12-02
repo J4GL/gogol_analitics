@@ -59,7 +59,7 @@ func Traffic(w http.ResponseWriter, r *http.Request) {
         OSStats: mockTable([]string{"Windows", "iOS", "Android", "MacOS", "Linux"}),
         SourceStats: mockTable([]string{"Direct", "Websites", "Search engines"}),
         ReferringSitesStats: mockTable([]string{"reddit.com", "t.co", "facebook.com", "news.ycombinator.com", "linkedin.com"}),
-        UserAgentStats: mockTable([]string{"Chrome/90.0", "Safari/14.0", "Firefox/88.0"}),
+        BrowserStats: mockTable([]string{"Chrome", "Safari", "Firefox", "Edge", "Opera"}),
         ResolutionStats: mockTable([]string{"1920x1080", "1366x768", "375x812", "1440x900"}),
         KeywordStats: mockTable([]string{"analytics", "go web dev", "tailwind charts", "mvc golang"}),
     }

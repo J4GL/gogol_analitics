@@ -32,7 +32,7 @@ type TrafficPageData struct {
 	TimeRange       string
 	ChartData       []ChartDataPoint
 	CountryStats    []TableRow
-	UserAgentStats  []TableRow
+	BrowserStats    []TableRow
 	ResolutionStats []TableRow
 	SourceStats     []TableRow
 	ReferringSitesStats []TableRow

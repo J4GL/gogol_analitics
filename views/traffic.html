@@ -87,14 +87,14 @@
         </div>
     </div>
 
-     <!-- User Agent Stats -->
+     <!-- Browser Stats -->
      <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden">
         <div class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10">
-            <h3 class="text-sm font-semibold text-black dark:text-white">User Agent</h3>
+            <h3 class="text-sm font-semibold text-black dark:text-white">Browser</h3>
         </div>
         <table class="w-full text-sm">
             <tbody>
-                {{range .UserAgentStats}}
+                {{range .BrowserStats}}
                 <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
                     <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="{{.Key}}">{{.Key}}</td>
                     <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">{{.Value}}</td>
