@@ -1,0 +1,88 @@
+{{define "content"}}
+<!-- PageHeading -->
+<div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+    <p class="text-black dark:text-white text-3xl font-bold tracking-tight">Settings</p>
+</div>
+
+<div class="flex flex-col gap-6">
+    
+    <!-- Tracking Code Section -->
+    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200/80 dark:border-white/10">
+            <h3 class="text-lg font-semibold text-black dark:text-white">Tracking Code</h3>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Copy and paste this snippet into the <code>&lt;head&gt;</code> of your website.</p>
+        </div>
+        <div class="p-6">
+            <div class="rounded-md bg-gray-900 p-4 overflow-x-auto">
+                <pre class="text-green-400 text-sm font-mono">{{.ScriptURL}}</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Website Section -->
+    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200/80 dark:border-white/10">
+            <h3 class="text-lg font-semibold text-black dark:text-white">Add New Website</h3>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Start tracking a new domain.</p>
+        </div>
+        <div class="p-6">
+            <form class="space-y-4" action="/settings/add" method="POST">
+                <div>
+                    <label for="website_name" class="block text-sm font-medium text-black dark:text-white">Website Name</label>
+                    <div class="mt-1">
+                        <input type="text" name="website_name" id="website_name" class="block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-800 shadow-sm focus:border-primary focus:ring-primary sm:text-sm dark:text-white" placeholder="My Awesome Blog">
+                    </div>
+                </div>
+                <div>
+                    <label for="website_url" class="block text-sm font-medium text-black dark:text-white">URL</label>
+                    <div class="mt-1">
+                        <input type="text" name="website_url" id="website_url" class="block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-800 shadow-sm focus:border-primary focus:ring-primary sm:text-sm dark:text-white" placeholder="https://example.com">
+                    </div>
+                </div>
+                <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                    Add Website
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- List of Websites -->
+    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200/80 dark:border-white/10">
+            <h3 class="text-lg font-semibold text-black dark:text-white">Your Websites</h3>
+        </div>
+        <ul class="divide-y divide-gray-200/80 dark:divide-white/10">
+            {{range .Websites}}
+            <li class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                <div class="flex items-center justify-between">
+                    <div class="text-sm font-medium text-primary truncate">{{.Name}}</div>
+                    <div class="ml-2 flex-shrink-0 flex">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                            Active
+                        </span>
+                    </div>
+                </div>
+                <div class="mt-2 sm:flex sm:justify-between">
+                    <div class="sm:flex">
+                        <p class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            {{.URL}}
+                        </p>
+                    </div>
+                    <div class="mt-2 flex items-center text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+                        <p>ID: {{.ID}}</p>
+                    </div>
+                    <div class="mt-2 sm:mt-0 ml-4">
+                        <form action="/settings/delete" method="POST" onsubmit="return confirm('Are you sure you want to remove this website?');">
+                            <input type="hidden" name="id" value="{{.ID}}">
+                            <button type="submit" class="text-red-600 hover:text-red-900 dark:hover:text-red-400 text-sm font-medium transition-colors">
+                                Remove
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </li>
+            {{end}}
+        </ul>
+    </div>
+</div>
+{{end}}

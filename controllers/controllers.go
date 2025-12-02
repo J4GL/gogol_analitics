@@ -92,7 +92,7 @@ func Settings(w http.ResponseWriter, r *http.Request) {
 
     data := models.SettingsPageData{
         CurrentPage: "settings",
-        ScriptURL: "<script src=\"http://localhost:8090/static/js/tracker.js\"></script>",
+        ScriptURL: "<script src=\"http://localhost:8091/static/js/tracker.js\"></script>",
         Websites: websites,
     }
 

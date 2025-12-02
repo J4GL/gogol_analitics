@@ -56,7 +56,7 @@ I want to make a simple analitics website with 3 page (tab) Traffic,Convertions 
 
 ## Building and Running
 
-The application listens on port **8090**.
+The application listens on port **8091**.
 
 ### Prerequisites
 *   Go 1.25+ installed.
