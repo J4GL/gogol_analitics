@@ -77,16 +77,16 @@
         </table>
     </div>
 
-    <!-- Source Stats -->
-    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden flex flex-col">
-        <div class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10">
-            <h3 class="text-sm font-semibold text-black dark:text-white">Top Sources</h3>
+    <!-- OS Stats -->
+    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden">
+        <div class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-200/80 dark:border-white/10">
+            <h3 class="text-sm font-semibold text-black dark:text-white">Operating System</h3>
         </div>
         <table class="w-full text-sm">
             <tbody>
-                {{range .SourceStats}}
+                {{range .OSStats}}
                 <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
-                    <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="{{.Key}}">{{.Key}}</td>
+                    <td class="px-4 py-2.5 text-black dark:text-white">{{.Key}}</td>
                     <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">{{.Value}}</td>
                 </tr>
                 {{end}}
@@ -121,6 +121,23 @@
                 {{range .ResolutionStats}}
                 <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
                     <td class="px-4 py-2.5 text-black dark:text-white">{{.Key}}</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">{{.Value}}</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Source Stats -->
+    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden flex flex-col">
+        <div class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10">
+            <h3 class="text-sm font-semibold text-black dark:text-white">Top Sources</h3>
+        </div>
+        <table class="w-full text-sm">
+            <tbody>
+                {{range .SourceStats}}
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="{{.Key}}">{{.Key}}</td>
                     <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">{{.Value}}</td>
                 </tr>
                 {{end}}
@@ -170,23 +187,6 @@
         <table class="w-full text-sm">
             <tbody>
                 {{range .DeviceStats}}
-                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
-                    <td class="px-4 py-2.5 text-black dark:text-white">{{.Key}}</td>
-                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">{{.Value}}</td>
-                </tr>
-                {{end}}
-            </tbody>
-        </table>
-    </div>
-
-    <!-- OS Stats -->
-    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden">
-        <div class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10">
-            <h3 class="text-sm font-semibold text-black dark:text-white">Operating System</h3>
-        </div>
-        <table class="w-full text-sm">
-            <tbody>
-                {{range .OSStats}}
                 <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
                     <td class="px-4 py-2.5 text-black dark:text-white">{{.Key}}</td>
                     <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">{{.Value}}</td>
