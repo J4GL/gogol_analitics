@@ -13,3 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New "Top Referring Websites" table in Traffic view.
 - `ReferringSitesStats` field to `TrafficPageData` model.
 - Mock data generation for the new analytics fields.
+
+### Changed
+- Replaced "User Agent" table with "Browser" table in Traffic view.
