@@ -13,7 +13,7 @@ You MUST then explicitly display the line: "My plan is: <plan>" where <plan> is 
 - YOU MUST always include a working numerical example in comments before implementing any
   monetary calculation: "Example: 100 tokens × $0.000000005/token = $0.0000005"
 - YOU MUST ALWAYS re-use existing code before writing new utilities, re-use as much code/ui elements as possible,in css always set variables once and use them everywhere.
-- Always start server in background.
+- YOU MUST ALWAYS start server in background never in foreground. This is MANDATORY.
 - When fixing a bug, you SHOULD NOT rush to the first conclusion, explore other possibilities, reflect on it, and then act.
 - Always commit changes immediately after implementing them with a detailed commit message
 - Update `GEMINI.md` concisely after commits if the changes affect the project structure or features.
@@ -39,7 +39,7 @@ I want to make a simple analitics website with 3 page (tab) Traffic,Convertions 
 
 *   **Traffic Analytics:**
     *   Traffic Overview Chart (Views, New/Returning Visitors, Bots).
-    *   Top Sources Pie Chart (Direct, Websites, Search Engines).
+    *   Top Sources Table (Direct, Websites, Search Engines).
     *   Detailed Tables: Top Countries, User Agents, Screen Resolutions, Top Referring Websites, Keywords, Device Breakdown, OS.
 *   **Settings:** Website management (Add/Delete) and tracker script integration.
 

@@ -82,9 +82,16 @@
         <div class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10">
             <h3 class="text-sm font-semibold text-black dark:text-white">Top Sources</h3>
         </div>
-        <div class="p-4 flex-1 flex items-center justify-center relative min-h-[200px]">
-             <canvas id="sourceChart"></canvas>
-        </div>
+        <table class="w-full text-sm">
+            <tbody>
+                {{range .SourceStats}}
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="{{.Key}}">{{.Key}}</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">{{.Value}}</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
     </div>
 
      <!-- Browser Stats -->
@@ -269,43 +276,6 @@
         }
     });
 
-    // Source Pie Chart
-    const ctxSource = document.getElementById('sourceChart').getContext('2d');
-    const sourceLabels = [{{range .SourceStats}}"{{.Key}}",{{end}}];
-    const sourceData = [{{range .SourceStats}}{{.Value}},{{end}}];
-
-    new Chart(ctxSource, {
-        type: 'pie',
-        data: {
-            labels: sourceLabels,
-            datasets: [{
-                data: sourceData,
-                backgroundColor: [
-                    '#3b82f6', // Blue 500 (Direct)
-                    '#22c55e', // Green 500 (Websites)
-                    '#f97316', // Orange 500 (Search Engines)
-                    '#a855f7', // Purple 500
-                    '#ef4444', // Red 500
-                ],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'right',
-                    labels: {
-                         color: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#e5e7eb' : '#374151',
-                         font: {
-                            size: 12
-                         },
-                         boxWidth: 12
-                    }
-                }
-            }
-        }
-    });
+    
 </script>
 {{end}}
