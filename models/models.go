@@ -31,6 +31,7 @@ type TrafficPageData struct {
     CurrentPage     string
 	TimeRange       string
 	ChartData       []ChartDataPoint
+	PageStats       []TableRow
 	CountryStats    []TableRow
 	BrowserStats    []TableRow
 	ResolutionStats []TableRow

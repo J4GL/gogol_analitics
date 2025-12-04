@@ -54,6 +54,7 @@ func Traffic(w http.ResponseWriter, r *http.Request) {
         CurrentPage: "traffic",
         TimeRange: "24h",
         ChartData: chartData,
+        PageStats: mockTable([]string{"/", "/about", "/blog/post-1", "/contact", "/pricing"}),
         CountryStats: mockTable([]string{"USA", "Germany", "France", "India", "Brazil"}),
         DeviceStats: mockTable([]string{"Mobile", "Desktop", "Tablet"}),
         OSStats: mockTable([]string{"Windows", "iOS", "Android", "MacOS", "Linux"}),
