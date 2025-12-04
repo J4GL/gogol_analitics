@@ -1,0 +1,614 @@
+
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Gogol Analytics</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#135bec",
+              "background-light": "#f6f6f8",
+              "background-dark": "#101622",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex min-h-screen w-full flex-col">
+    <div class="flex h-full w-full flex-row">
+        
+        <aside class="flex h-auto min-h-screen w-64 flex-col border-r border-gray-200/10 dark:border-white/10 bg-white/5 dark:bg-black/5 p-4">
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center gap-3">
+                    
+                    <div class="bg-indigo-600 rounded-full size-10 flex items-center justify-center text-white font-bold">
+                        G
+                    </div>
+                    <div class="flex flex-col">
+                        <h1 class="text-black dark:text-white text-base font-medium leading-normal">Gogol</h1>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">Analytics</p>
+                    </div>
+                </div>
+                <nav class="flex flex-col gap-2 mt-4">
+                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 bg-primary/20 text-primary" href="/">
+                        <span class="material-symbols-outlined !fill-1">bar_chart</span>
+                        <p class="text-sm font-medium leading-normal">Traffic</p>
+                    </a>
+                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300" href="/conversions">
+                        <span class="material-symbols-outlined ">check_circle</span>
+                        <p class="text-sm font-medium leading-normal">Conversions</p>
+                    </a>
+                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300" href="/settings">
+                        <span class="material-symbols-outlined ">settings</span>
+                        <p class="text-sm font-medium leading-normal">Settings</p>
+                    </a>
+                </nav>
+            </div>
+        </aside>
+        
+        
+        <main class="flex flex-1 flex-col p-6 lg:p-8">
+            <div class="w-full max-w-7xl mx-auto">
+                
+
+<div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+    <p class="text-black dark:text-white text-3xl font-bold tracking-tight">Traffic Analytics</p>
+</div>
+
+
+<div class="flex w-full md:w-auto mb-6">
+    <div class="flex h-10 w-full items-center justify-center rounded-lg bg-gray-200 dark:bg-black/30 p-1">
+        
+        <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-md px-4 bg-white dark:bg-gray-700 shadow-sm text-black dark:text-white text-sm font-medium leading-normal transition-colors">
+            <span class="truncate">Last 24 hours</span>
+            <input checked class="invisible w-0" name="time-period" type="radio" value="24h" onclick="window.location.href='?range=24h'"/>
+        </label>
+        
+        
+        <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-md px-4 text-gray-500 dark:text-gray-400 text-sm font-medium leading-normal transition-colors">
+            <span class="truncate">Last 7 days</span>
+            <input  class="invisible w-0" name="time-period" type="radio" value="7d" onclick="window.location.href='?range=7d'"/>
+        </label>
+
+        
+        <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-md px-4 text-gray-500 dark:text-gray-400 text-sm font-medium leading-normal transition-colors">
+            <span class="truncate">Last 30 days</span>
+            <input  class="invisible w-0" name="time-period" type="radio" value="30d" onclick="window.location.href='?range=30d'"/>
+        </label>
+    </div>
+</div>
+
+
+<div class="w-full mb-8">
+    <div
+        class="flex min-w-72 flex-1 flex-col gap-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 p-6">
+        <div class="flex flex-wrap items-start justify-between gap-4">
+            <div>
+                <p class="text-black dark:text-white text-lg font-semibold leading-normal">Traffic Overview</p>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                    Last 24 hours
+                </p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
+                    <span class="text-xs text-gray-600 dark:text-gray-300">Views</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                    <span class="text-xs text-gray-600 dark:text-gray-300">New Visitors</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-orange-500"></div>
+                    <span class="text-xs text-gray-600 dark:text-gray-300">Returning</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-purple-500"></div>
+                    <span class="text-xs text-gray-600 dark:text-gray-300">Bots</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex min-h-[300px] w-full flex-1 flex-col relative">
+            <canvas id="trafficChart" class="w-full h-full"></canvas>
+        </div>
+    </div>
+</div>
+
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    
+    
+    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden">
+        <div class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10">
+            <h3 class="text-sm font-semibold text-black dark:text-white">Most Viewed Pages</h3>
+        </div>
+        <table class="w-full text-sm">
+            <tbody>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="/page3">/page3</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="/page2">/page2</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="/page1">/page1</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="/hash-test">/hash-test</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+    
+    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden">
+        <div class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10">
+            <h3 class="text-sm font-semibold text-black dark:text-white">Top Countries</h3>
+        </div>
+        <table class="w-full text-sm">
+            <tbody>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">FR</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">2</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">US</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">DE</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+    
+    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden">
+        <div class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-200/80 dark:border-white/10">
+            <h3 class="text-sm font-semibold text-black dark:text-white">Operating System</h3>
+        </div>
+        <table class="w-full text-sm">
+            <tbody>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">macOS</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">Windows</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">Unknown</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">Android</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+    
+    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden">
+        <div class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10">
+            <h3 class="text-sm font-semibold text-black dark:text-white">Browser</h3>
+        </div>
+        <table class="w-full text-sm">
+            <tbody>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="Chrome">Chrome
+                    </td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">2</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="Safari">Safari
+                    </td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="Other">Other
+                    </td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+    
+    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden">
+        <div class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10">
+            <h3 class="text-sm font-semibold text-black dark:text-white">Screen Resolution</h3>
+        </div>
+        <table class="w-full text-sm">
+            <tbody>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">800x600</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">360x800</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">1920x1080</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">1440x900</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+    
+    <div
+        class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden flex flex-col">
+        <div class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10">
+            <h3 class="text-sm font-semibold text-black dark:text-white">Top Sources</h3>
+        </div>
+        <table class="w-full text-sm">
+            <tbody>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="https://twitter.com">https://twitter.com
+                    </td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="https://google.com?q=golang">https://google.com?q=golang
+                    </td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="direct">direct
+                    </td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="Direct">Direct
+                    </td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+    
+    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden">
+        <div class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10">
+            <h3 class="text-sm font-semibold text-black dark:text-white">Top Referring Websites</h3>
+        </div>
+        <table class="w-full text-sm">
+            <tbody>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">https://twitter.com</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">https://google.com?q=golang</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">direct</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+    
+    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden">
+        <div class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10">
+            <h3 class="text-sm font-semibold text-black dark:text-white">Top Keywords</h3>
+        </div>
+        <table class="w-full text-sm">
+            <tbody>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">golang</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+    
+    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden">
+        <div class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10">
+            <h3 class="text-sm font-semibold text-black dark:text-white">Device Breakdown</h3>
+        </div>
+        <table class="w-full text-sm">
+            <tbody>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">Desktop</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">3</td>
+                </tr>
+                
+                <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                    <td class="px-4 py-2.5 text-black dark:text-white">Mobile</td>
+                    <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+    
+    <div
+        class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-black/20 overflow-hidden col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-4">
+        <div
+            class="px-4 py-3 bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10 flex justify-between items-center">
+            <h3 class="text-sm font-semibold text-black dark:text-white">Real-time Events</h3>
+            <div class="flex items-center gap-2">
+                <span class="relative flex h-2 w-2">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">Live</span>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+                <thead
+                    class="text-xs text-gray-500 dark:text-gray-400 uppercase bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10">
+                    <tr>
+                        <th scope="col" class="px-4 py-3">Time</th>
+                        <th scope="col" class="px-4 py-3">Country</th>
+                        <th scope="col" class="px-4 py-3">Page</th>
+                        <th scope="col" class="px-4 py-3">Source</th>
+                        <th scope="col" class="px-4 py-3">Device</th>
+                        <th scope="col" class="px-4 py-3">Type</th>
+                        <th scope="col" class="px-4 py-3 text-right">IP</th>
+                    </tr>
+                </thead>
+                <tbody id="realtime-events-body">
+                    
+                    <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                        <td class="px-4 py-2.5 text-black dark:text-white">22:48:08</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">FR</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="/page3">/page3</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]" title="https://twitter.com">https://twitter.com</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]">-</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">Android</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">Chrome</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">360x800</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">Mobile</td>
+                        <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">3.3.3.3</td>
+                    </tr>
+                    
+                    <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                        <td class="px-4 py-2.5 text-black dark:text-white">22:48:08</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">DE</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="/page2">/page2</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]" title="https://google.com?q=golang">https://google.com?q=golang</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]">golang</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">macOS</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">Safari</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">1440x900</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">Desktop</td>
+                        <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">2.2.2.2</td>
+                    </tr>
+                    
+                    <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                        <td class="px-4 py-2.5 text-black dark:text-white">22:48:08</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">US</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="/page1">/page1</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]" title="">Direct</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]">-</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">Windows</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">Chrome</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">1920x1080</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">Desktop</td>
+                        <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">1.1.1.1</td>
+                    </tr>
+                    
+                    <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                        <td class="px-4 py-2.5 text-black dark:text-white">22:40:54</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">FR</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="/hash-test">/hash-test</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]" title="direct">direct</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]">-</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">Unknown</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">Other</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">800x600</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">Desktop</td>
+                        <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">192.168.1.100</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const ctx = document.getElementById('trafficChart').getContext('2d');
+
+    
+    const labels = ["23:00","00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00",];
+    const views = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 4 ,];
+    const newVisitors = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 4 ,];
+    const returningVisitors = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,];
+    const bots = [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ,];
+
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Views',
+                    data: views,
+                    borderColor: '#3b82f6', 
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: 'New Visitors',
+                    data: newVisitors,
+                    borderColor: '#22c55e', 
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: 'Returning Visitors',
+                    data: returningVisitors,
+                    borderColor: '#f97316', 
+                    backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: 'Bots',
+                    data: bots,
+                    borderColor: '#a855f7', 
+                    backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                    fill: true,
+                    tension: 0.3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    display: false 
+                },
+                title: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false, drawBorder: false },
+                    ticks: { color: '#9ca3af' }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(156, 163, 175, 0.1)', drawBorder: false },
+                    ticks: { color: '#9ca3af' }
+                }
+            }
+        }
+    });
+
+    
+    const eventSource = new EventSource('/api/events');
+    const tableBody = document.getElementById('realtime-events-body');
+
+    eventSource.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        const row = document.createElement('tr');
+        row.className = "border-b border-gray-200/80 dark:border-white/10 last:border-0 animate-pulse";
+
+        
+        const date = new Date(data.Timestamp);
+        const timeStr = date.toLocaleTimeString();
+
+        row.innerHTML = `
+            <td class="px-4 py-2.5 text-black dark:text-white">${timeStr}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white">${data.country || '-'}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="${data.current_url}">${data.current_url}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]" title="${data.referrer}">${data.referrer || 'Direct'}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]">${data.keyword || '-'}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white">${data.os}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white">${data.browser}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white">${data.screen_resolution}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white">${data.device}</td>
+            <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">${data.ip}</td>
+        `;
+
+        
+        setTimeout(() => {
+            row.classList.remove('animate-pulse');
+        }, 1000);
+
+        tableBody.insertBefore(row, tableBody.firstChild);
+
+        
+        if (tableBody.children.length > 20) {
+            tableBody.removeChild(tableBody.lastChild);
+        }
+    };
+
+</script>
+
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

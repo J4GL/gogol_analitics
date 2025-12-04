@@ -196,6 +196,12 @@ func Traffic(w http.ResponseWriter, r *http.Request) {
         fmt.Printf("Error getting recent events: %v\n", err)
     }
 
+    // Get source stats specifically to handle "Direct"
+    sourceStats, err := database.GetTopSources(10)
+    if err != nil {
+         fmt.Printf("Error getting source stats: %v\n", err)
+    }
+
 	data := models.TrafficPageData{
 		CurrentPage:         "traffic",
 		TimeRange:           timeRange,
@@ -204,8 +210,8 @@ func Traffic(w http.ResponseWriter, r *http.Request) {
 		CountryStats:        getStats("country"),
 		DeviceStats:         getStats("device"),
 		OSStats:             getStats("os"),
-		SourceStats:         getStats("referrer"), // Using referrer as source
-		ReferringSitesStats: getStats("referrer"), // Same for now, logic could differ (domain only)
+		SourceStats:         sourceStats,
+		ReferringSitesStats: getStats("referrer"), // Keep generic for specific sites (excludes Direct)
 		BrowserStats:        getStats("browser"),
 		ResolutionStats:     getStats("screen_resolution"),
 		KeywordStats:        getStats("keyword"),

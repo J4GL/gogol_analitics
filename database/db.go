@@ -209,6 +209,35 @@ func GetTopStats(column string, limit int) ([]models.TableRow, error) {
 	return stats, nil
 }
 
+// GetTopSources aggregates referrers, treating empty strings as "Direct"
+func GetTopSources(limit int) ([]models.TableRow, error) {
+	// SQLite CASE WHEN to handle empty referrer
+	query := `
+		SELECT 
+			CASE WHEN referrer = '' THEN 'Direct' ELSE referrer END as source, 
+			COUNT(*) as count 
+		FROM events 
+		GROUP BY source 
+		ORDER BY count DESC 
+		LIMIT ?
+	`
+	rows, err := DB.Query(query, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var stats []models.TableRow
+	for rows.Next() {
+		var row models.TableRow
+		if err := rows.Scan(&row.Key, &row.Value); err != nil {
+			continue
+		}
+		stats = append(stats, row)
+	}
+	return stats, nil
+}
+
 // GetRecentEvents retrieves the latest N events
 func GetRecentEvents(limit int) ([]models.Event, error) {
 	rows, err := DB.Query(`
