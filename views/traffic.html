@@ -7,17 +7,22 @@
 <!-- SegmentedButtons -->
 <div class="flex w-full md:w-auto mb-6">
     <div class="flex h-10 w-full items-center justify-center rounded-lg bg-gray-200 dark:bg-black/30 p-1">
+        <!-- 24h -->
         <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-md px-4 {{if eq .TimeRange "24h"}}bg-white dark:bg-gray-700 shadow-sm text-black dark:text-white{{else}}text-gray-500 dark:text-gray-400{{end}} text-sm font-medium leading-normal transition-colors">
             <span class="truncate">Last 24 hours</span>
-            <input {{if eq .TimeRange "24h"}}checked=""{{end}} class="invisible w-0" name="time-period" type="radio" value="24h" onclick="window.location.href='?range=24h'"/>
+            <input {{if eq .TimeRange "24h"}}checked{{end}} class="invisible w-0" name="time-period" type="radio" value="24h" onclick="window.location.href='?range=24h'"/>
         </label>
+        
+        <!-- 7d -->
         <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-md px-4 {{if eq .TimeRange "7d"}}bg-white dark:bg-gray-700 shadow-sm text-black dark:text-white{{else}}text-gray-500 dark:text-gray-400{{end}} text-sm font-medium leading-normal transition-colors">
             <span class="truncate">Last 7 days</span>
-            <input {{if eq .TimeRange "7d"}}checked=""{{end}} class="invisible w-0" name="time-period" type="radio" value="7d" onclick="window.location.href='?range=7d'"/>
+            <input {{if eq .TimeRange "7d"}}checked{{end}} class="invisible w-0" name="time-period" type="radio" value="7d" onclick="window.location.href='?range=7d'"/>
         </label>
+
+        <!-- 30d -->
         <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-md px-4 {{if eq .TimeRange "30d"}}bg-white dark:bg-gray-700 shadow-sm text-black dark:text-white{{else}}text-gray-500 dark:text-gray-400{{end}} text-sm font-medium leading-normal transition-colors">
             <span class="truncate">Last 30 days</span>
-            <input {{if eq .TimeRange "30d"}}checked=""{{end}} class="invisible w-0" name="time-period" type="radio" value="30d" onclick="window.location.href='?range=30d'"/>
+            <input {{if eq .TimeRange "30d"}}checked{{end}} class="invisible w-0" name="time-period" type="radio" value="30d" onclick="window.location.href='?range=30d'"/>
         </label>
     </div>
 </div>
