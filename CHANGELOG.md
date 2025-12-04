@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Real-time Events table now positioned at the top of the traffic page for immediate visibility
 - Privacy-preserving IP address hashing using SHA256 with User-Agent as salt
+- Noscript tracking support via image pixel fallback for users without JavaScript
+- Settings page now displays both JavaScript and noscript tracking code
 
 ### Changed
 - IP addresses are now hashed before storage instead of storing plain text IPs
