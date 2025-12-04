@@ -15,6 +15,7 @@ You MUST then explicitly display the line: "My plan is: <plan>" where <plan> is 
 - YOU MUST ALWAYS re-use existing code before writing new utilities, re-use as much code/ui elements as possible,in css always set variables once and use them everywhere.
 - YOU MUST ALWAYS start server or any cli application in background to not block the terminal never in foreground. This is MANDATORY.
 - YOU MUST ALWAYS start the ./app binary with `nohup` (e.g., `nohup ./app > server.log 2>&1 &`).
+- You MUST never kill ./app binary when you are done with it.
 - When fixing a bug, you SHOULD NOT rush to the first conclusion, explore other possibilities, reflect on it, and then act.
 - Always commit changes immediately after implementing them with a detailed commit message
 - Update `GEMINI.md` concisely after commits if the changes affect the project structure or features.
