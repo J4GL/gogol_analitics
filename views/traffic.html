@@ -259,11 +259,11 @@
     const ctx = document.getElementById('trafficChart').getContext('2d');
 
     // Generate arrays from Go data
-    const labels = [{{ range .ChartData }}"{{.Label}}", {{ end }}];
-    const views = [{{ range .ChartData }}{ {.Views } }, { { end } }];
-    const newVisitors = [{{ range .ChartData }}{ {.NewVisitors } }, { { end } }];
-    const returningVisitors = [{{ range .ChartData }}{ {.ReturningVisitors } }, { { end } }];
-    const bots = [{{ range .ChartData }}{ {.Bots } }, { { end } }];
+    const labels = [{{range .ChartData}}"{{.Label}}",{{end}}];
+    const views = [{{range .ChartData}}{{.Views}},{{end}}];
+    const newVisitors = [{{range .ChartData}}{{.NewVisitors}},{{end}}];
+    const returningVisitors = [{{range .ChartData}}{{.ReturningVisitors}},{{end}}];
+    const bots = [{{range .ChartData}}{{.Bots}},{{end}}];
 
     const chart = new Chart(ctx, {
         type: 'line',
