@@ -11,12 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Privacy-preserving IP address hashing using SHA256 with User-Agent as salt
 - Noscript tracking support via image pixel fallback for users without JavaScript
 - Settings page now displays both JavaScript and noscript tracking code
+- Domain whitelist validation to reject events from unauthorized domains
+- Security notice on Settings page about domain validation
 
 ### Changed
 - IP addresses are now hashed before storage instead of storing plain text IPs
 - Real-time Events table displays truncated IP hash (first 12 characters) with full hash in tooltip
+- Noscript tracking now works without URL parameters (extracts from Referer header)
+- Events from unauthorized domains are automatically rejected
 
-### Fixed
+### Security
 - Invalid time format in Real-time Events table - now displays as HH:MM:SS instead of locale-dependent format
 - Most Viewed Pages now shows only page paths (e.g., `/page`) instead of full URLs
 - Top Sources now displays only domain names (TLDs) instead of full URLs
