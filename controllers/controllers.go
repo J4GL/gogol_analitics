@@ -162,6 +162,63 @@ func extractTLD(urlStr string) string {
 	return host
 }
 
+// isAuthorizedDomain checks if the given URL's domain is in the authorized websites list
+func isAuthorizedDomain(urlStr string) bool {
+	if urlStr == "" {
+		return false
+	}
+
+	// Parse the URL to extract the domain
+	u, err := url.Parse(urlStr)
+	if err != nil {
+		return false
+	}
+
+	// Get the host (domain)
+	host := u.Host
+	if host == "" {
+		// Try to parse as just a domain
+		host = u.Path
+	}
+
+	// Remove port if present
+	if idx := strings.Index(host, ":"); idx != -1 {
+		host = host[:idx]
+	}
+
+	// Get all authorized websites from database
+	websites, err := database.GetWebsites()
+	if err != nil {
+		fmt.Printf("Error checking authorized domains: %v\n", err)
+		return false
+	}
+
+	// Check if the domain matches any authorized website
+	for _, website := range websites {
+		websiteURL, err := url.Parse(website.URL)
+		if err != nil {
+			continue
+		}
+
+		websiteHost := websiteURL.Host
+		if websiteHost == "" {
+			websiteHost = websiteURL.Path
+		}
+
+		// Remove port if present
+		if idx := strings.Index(websiteHost, ":"); idx != -1 {
+			websiteHost = websiteHost[:idx]
+		}
+
+		// Match domain (case-insensitive)
+		if strings.EqualFold(host, websiteHost) {
+			return true
+		}
+	}
+
+	return false
+}
+
 // --- Handlers ---
 
 func Track(w http.ResponseWriter, r *http.Request) {
@@ -192,6 +249,12 @@ func Track(w http.ResponseWriter, r *http.Request) {
 	}
 
 	event := payload.Event
+
+	// Validate domain - reject events from unauthorized domains
+	if !isAuthorizedDomain(event.CurrentURL) {
+		http.Error(w, "Unauthorized domain", http.StatusForbidden)
+		return
+	}
 
 	// Fill missing server-side fields
 	event.Timestamp = time.Now()
@@ -250,9 +313,35 @@ func TrackNoscript(w http.ResponseWriter, r *http.Request) {
 		event.UserAgent = "unknown"
 	}
 
-	// Get referrer and current URL from query params
+	// Get current URL from Referer header (the page making the request)
+	event.CurrentURL = r.Header.Get("Referer")
+	if event.CurrentURL == "" {
+		event.CurrentURL = "unknown"
+	}
+
+	// Validate domain - reject events from unauthorized domains
+	if event.CurrentURL != "unknown" && !isAuthorizedDomain(event.CurrentURL) {
+		// Return pixel anyway but don't save the event
+		w.Header().Set("Content-Type", "image/gif")
+		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+		gif := []byte{
+			0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00,
+			0x01, 0x00, 0x80, 0x00, 0x00, 0xFF, 0xFF, 0xFF,
+			0x00, 0x00, 0x00, 0x21, 0xF9, 0x04, 0x01, 0x00,
+			0x00, 0x00, 0x00, 0x2C, 0x00, 0x00, 0x00, 0x00,
+			0x01, 0x00, 0x01, 0x00, 0x00, 0x02, 0x02, 0x44,
+			0x01, 0x00, 0x3B,
+		}
+		w.Write(gif)
+		return
+	}
+
+	// Get referrer from Referer header or query param
 	event.Referrer = r.URL.Query().Get("r")
-	event.CurrentURL = r.URL.Query().Get("u")
+	if event.Referrer == "" {
+		// Try to get from a different header or leave empty
+		event.Referrer = ""
+	}
 
 	// Set timestamp
 	event.Timestamp = time.Now()
