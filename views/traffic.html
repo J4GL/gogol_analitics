@@ -246,12 +246,27 @@
                         <th scope="col" class="px-4 py-3">Time</th>
                         <th scope="col" class="px-4 py-3">Country</th>
                         <th scope="col" class="px-4 py-3">Page</th>
+                        <th scope="col" class="px-4 py-3">Source</th>
+                        <th scope="col" class="px-4 py-3">Device</th>
                         <th scope="col" class="px-4 py-3">Type</th>
                         <th scope="col" class="px-4 py-3 text-right">IP</th>
                     </tr>
                 </thead>
                 <tbody id="realtime-events-body">
-                    <!-- Rows will be added here via JS -->
+                    {{range .RecentEvents}}
+                    <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
+                        <td class="px-4 py-2.5 text-black dark:text-white">{{.Timestamp.Format "15:04:05"}}</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">{{if .Country}}{{.Country}}{{else}}-{{end}}</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="{{.CurrentURL}}">{{.CurrentURL}}</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]" title="{{.Referrer}}">{{if .Referrer}}{{.Referrer}}{{else}}Direct{{end}}</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]">{{if .Keyword}}{{.Keyword}}{{else}}-{{end}}</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">{{.OS}}</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">{{.Browser}}</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">{{.ScreenResolution}}</td>
+                        <td class="px-4 py-2.5 text-black dark:text-white">{{.Device}}</td>
+                        <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">{{.IP}}</td>
+                    </tr>
+                    {{end}}
                 </tbody>
             </table>
         </div>
@@ -352,10 +367,15 @@
 
         row.innerHTML = `
             <td class="px-4 py-2.5 text-black dark:text-white">${timeStr}</td>
-            <td class="px-4 py-2.5 text-black dark:text-white">${data.Country}</td>
-            <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="${data.CurrentURL}">${data.CurrentURL}</td>
-            <td class="px-4 py-2.5 text-black dark:text-white">${data.IsBot ? 'Bot' : 'User'}</td>
-            <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">${data.IP}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white">${data.country || '-'}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="${data.current_url}">${data.current_url}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]" title="${data.referrer}">${data.referrer || 'Direct'}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]">${data.keyword || '-'}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white">${data.os}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white">${data.browser}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white">${data.screen_resolution}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white">${data.device}</td>
+            <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">${data.ip}</td>
         `;
 
         // Remove animation after a bit

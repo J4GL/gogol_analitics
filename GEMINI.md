@@ -13,7 +13,8 @@ You MUST then explicitly display the line: "My plan is: <plan>" where <plan> is 
 - YOU MUST always include a working numerical example in comments before implementing any
   monetary calculation: "Example: 100 tokens × $0.000000005/token = $0.0000005"
 - YOU MUST ALWAYS re-use existing code before writing new utilities, re-use as much code/ui elements as possible,in css always set variables once and use them everywhere.
-- YOU MUST ALWAYS start server in background never in foreground. This is MANDATORY.
+- YOU MUST ALWAYS start server or any cli application in background to not block the terminal never in foreground. This is MANDATORY.
+- YOU MUST ALWAYS start the ./app binary with `nohup` (e.g., `nohup ./app > server.log 2>&1 &`).
 - When fixing a bug, you SHOULD NOT rush to the first conclusion, explore other possibilities, reflect on it, and then act.
 - Always commit changes immediately after implementing them with a detailed commit message
 - Update `GEMINI.md` concisely after commits if the changes affect the project structure or features.
@@ -85,3 +86,13 @@ Access the dashboard at: **http://localhost:8090**
 *   **Styling:** Tailwind CSS is loaded via CDN. Configuration is embedded in the `<head>` of `layout.html` to support dark mode and custom colors.
 *   **State Management:** Simple state (like the list of tracked websites) is currently managed in-memory within `controllers.go` protected by a mutex (`storeMutex`).
 *   **Routing:** All routes are defined in `main.go` using the standard `http.HandleFunc`.
+
+## Troubleshooting History
+
+### "unterminated quoted string" in `traffic.html`
+*   **Issue:** The server failed to start with `template: traffic.html:11: unterminated quoted string`.
+*   **Cause:** Go's `html/template` parser does not handle template actions (e.g., `{{if ...}}`) split across multiple lines within HTML attributes. Auto-formatters were splitting these long lines, breaking the template syntax.
+*   **Fix:**
+    *   Refactored the `SegmentedButtons` section in `views/traffic.html` to ensure all template actions and attributes are on a single line.
+    *   **Crucial:** When editing this file programmatically, use `cat` with a heredoc or ensure the tool does not apply auto-formatting that splits lines inside tags.
+    *   Also fixed malformed `{{ end }}` tags in the JavaScript section.

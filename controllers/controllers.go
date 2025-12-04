@@ -1,16 +1,61 @@
 package controllers
 
 import (
+    "crypto/sha256"
+    "encoding/hex"
+	"encoding/json"
+	"fmt"
+	"gogol_analytics/database"
+	"gogol_analytics/models"
 	"html/template"
 	"net/http"
+    "net/url"
 	"path/filepath"
-	"gogol_analytics/models"
-    "gogol_analytics/database"
+    "strings"
+    "sync"
 	"time"
-    "fmt"
 )
 
-// Helper to parse templates
+// --- SSE Broker ---
+
+type Broker struct {
+	clients map[chan models.Event]bool
+	mutex   sync.Mutex
+}
+
+var sseBroker = &Broker{
+	clients: make(map[chan models.Event]bool),
+}
+
+func (b *Broker) AddClient() chan models.Event {
+	b.mutex.Lock()
+	defer b.mutex.Unlock()
+	ch := make(chan models.Event, 10) // Buffer to prevent blocking
+	b.clients[ch] = true
+	return ch
+}
+
+func (b *Broker) RemoveClient(ch chan models.Event) {
+	b.mutex.Lock()
+	defer b.mutex.Unlock()
+	delete(b.clients, ch)
+	close(ch)
+}
+
+func (b *Broker) Broadcast(event models.Event) {
+	b.mutex.Lock()
+	defer b.mutex.Unlock()
+	for ch := range b.clients {
+		select {
+		case ch <- event:
+		default:
+			// Skip if client buffer is full (slow client)
+		}
+	}
+}
+
+// --- Helpers ---
+
 func parseTemplates(templates ...string) (*template.Template, error) {
 	var paths []string
 	for _, t := range templates {
@@ -19,34 +64,153 @@ func parseTemplates(templates ...string) (*template.Template, error) {
 	return template.ParseFiles(paths...)
 }
 
+func parseUA(ua string) (os, browser, device string) {
+    // Simple heuristics
+    ua = strings.ToLower(ua)
+    
+    // OS
+    if strings.Contains(ua, "windows") {
+        os = "Windows"
+    } else if strings.Contains(ua, "macintosh") {
+        os = "macOS"
+    } else if strings.Contains(ua, "android") {
+        os = "Android"
+    } else if strings.Contains(ua, "iphone") || strings.Contains(ua, "ipad") {
+        os = "iOS"
+    } else if strings.Contains(ua, "linux") {
+        os = "Linux"
+    } else {
+        os = "Unknown"
+    }
+
+    // Browser
+    if strings.Contains(ua, "edg/") {
+        browser = "Edge"
+    } else if strings.Contains(ua, "chrome/") {
+        browser = "Chrome"
+    } else if strings.Contains(ua, "firefox/") {
+        browser = "Firefox"
+    } else if strings.Contains(ua, "safari/") {
+        browser = "Safari"
+    } else {
+        browser = "Other"
+    }
+
+    // Device
+    if strings.Contains(ua, "mobile") || strings.Contains(ua, "android") || strings.Contains(ua, "iphone") {
+        device = "Mobile"
+    } else if strings.Contains(ua, "ipad") || strings.Contains(ua, "tablet") {
+        device = "Tablet"
+    } else {
+        device = "Desktop"
+    }
+    
+    return
+}
+
+func parseKeyword(referrer string) string {
+    if referrer == "" {
+        return ""
+    }
+    u, err := url.Parse(referrer)
+    if err != nil {
+        return ""
+    }
+    // Check common query params
+    q := u.Query().Get("q")
+    if q != "" { return q }
+    p := u.Query().Get("p") // Yahoo
+    if p != "" { return p }
+    return ""
+}
+
+// --- Handlers ---
+
+func Track(w http.ResponseWriter, r *http.Request) {
+    // CORS headers
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+    if r.Method == "OPTIONS" {
+        w.WriteHeader(http.StatusOK)
+        return
+    }
+
+    if r.Method != "POST" {
+        http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+        return
+    }
+
+    var event models.Event
+    if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
+        http.Error(w, "Bad request", http.StatusBadRequest)
+        return
+    }
+    
+    // Fill missing server-side fields
+    event.Timestamp = time.Now()
+    event.OS, event.Browser, event.Device = parseUA(event.UserAgent)
+    event.Keyword = parseKeyword(event.Referrer)
+    
+    // Generate Visitor ID (IP + UserAgent)
+    hash := sha256.Sum256([]byte(event.IP + event.UserAgent))
+    event.VisitorID = hex.EncodeToString(hash[:])
+
+    // Save to DB
+    if err := database.InsertEvent(event); err != nil {
+        fmt.Printf("DB Error: %v\n", err)
+        // Don't fail the request, just log
+    }
+    
+    // Broadcast to SSE
+    sseBroker.Broadcast(event)
+    
+    w.WriteHeader(http.StatusNoContent)
+}
+
 func Traffic(w http.ResponseWriter, r *http.Request) {
-    // Default to 24h, zero data for now
-    points := 24
-    chartData := make([]models.ChartDataPoint, points)
-    for i := 0; i < points; i++ {
-        chartData[i] = models.ChartDataPoint{
-            Label: fmt.Sprintf("%02d:00", i),
-            Views: 0,
-            NewVisitors: 0,
-            ReturningVisitors: 0,
-            Bots: 0,
+	timeRange := r.URL.Query().Get("range")
+	if timeRange == "" {
+		timeRange = "24h"
+	}
+
+	chartData, err := database.GetChartData(timeRange)
+    if err != nil {
+        fmt.Printf("Error getting chart data: %v\n", err)
+    }
+    
+    // Helper to get stats safely
+    getStats := func(col string) []models.TableRow {
+        s, err := database.GetTopStats(col, 10)
+        if err != nil {
+            fmt.Printf("Error getting stats for %s: %v\n", col, err)
+            return []models.TableRow{}
         }
+        return s
+    }
+
+    // Get recent events
+    recentEvents, err := database.GetRecentEvents(20)
+    if err != nil {
+        fmt.Printf("Error getting recent events: %v\n", err)
     }
 
 	data := models.TrafficPageData{
-        CurrentPage: "traffic",
-        TimeRange: "24h",
-        ChartData: chartData,
-        PageStats: []models.TableRow{},
-        CountryStats: []models.TableRow{},
-        DeviceStats: []models.TableRow{},
-        OSStats: []models.TableRow{},
-        SourceStats: []models.TableRow{},
-        ReferringSitesStats: []models.TableRow{},
-        BrowserStats: []models.TableRow{},
-        ResolutionStats: []models.TableRow{},
-        KeywordStats: []models.TableRow{},
-    }
+		CurrentPage:         "traffic",
+		TimeRange:           timeRange,
+		ChartData:           chartData,
+		PageStats:           getStats("current_url"),
+		CountryStats:        getStats("country"),
+		DeviceStats:         getStats("device"),
+		OSStats:             getStats("os"),
+		SourceStats:         getStats("referrer"), // Using referrer as source
+		ReferringSitesStats: getStats("referrer"), // Same for now, logic could differ (domain only)
+		BrowserStats:        getStats("browser"),
+		ResolutionStats:     getStats("screen_resolution"),
+		KeywordStats:        getStats("keyword"),
+        RecentEvents:        recentEvents,
+	}
 
 	tmpl, err := parseTemplates("layout.html", "traffic.html")
 	if err != nil {
@@ -62,23 +226,23 @@ func Conversions(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-    // Anonymous struct for now
+	// Anonymous struct for now
 	data := struct{ CurrentPage string }{CurrentPage: "conversions"}
 	tmpl.ExecuteTemplate(w, "layout", data)
 }
 
 func Settings(w http.ResponseWriter, r *http.Request) {
-    websites, err := database.GetWebsites()
-    if err != nil {
-        http.Error(w, "Database error", http.StatusInternalServerError)
-        return
-    }
+	websites, err := database.GetWebsites()
+	if err != nil {
+		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
+	}
 
-    data := models.SettingsPageData{
-        CurrentPage: "settings",
-        ScriptURL: "<script src=\"http://localhost:8091/static/js/tracker.js\"></script>",
-        Websites: websites,
-    }
+	data := models.SettingsPageData{
+		CurrentPage: "settings",
+		ScriptURL:   "<script src=\"http://localhost:8091/static/js/tracker.js\"></script>",
+		Websites:    websites,
+	}
 
 	tmpl, err := parseTemplates("layout.html", "settings.html")
 	if err != nil {
@@ -89,40 +253,86 @@ func Settings(w http.ResponseWriter, r *http.Request) {
 }
 
 func SettingsAdd(w http.ResponseWriter, r *http.Request) {
-    if r.Method == "POST" {
-        if err := r.ParseForm(); err != nil {
-             http.Error(w, "Invalid request", http.StatusBadRequest)
-             return
-        }
-        
-        name := r.FormValue("website_name")
-        url := r.FormValue("website_url")
-        
-        if name != "" && url != "" {
-            if err := database.AddWebsite(name, url); err != nil {
-                 http.Error(w, "Database error", http.StatusInternalServerError)
-                 return
-            }
-        }
-        
-        http.Redirect(w, r, "/settings", http.StatusSeeOther)
-        return
-    }
-    http.Redirect(w, r, "/settings", http.StatusSeeOther)
+	if r.Method == "POST" {
+		if err := r.ParseForm(); err != nil {
+			http.Error(w, "Invalid request", http.StatusBadRequest)
+			return
+		}
+
+		name := r.FormValue("website_name")
+		url := r.FormValue("website_url")
+
+		if name != "" && url != "" {
+			if err := database.AddWebsite(name, url); err != nil {
+				http.Error(w, "Database error", http.StatusInternalServerError)
+				return
+			}
+		}
+
+		http.Redirect(w, r, "/settings", http.StatusSeeOther)
+		return
+	}
+	http.Redirect(w, r, "/settings", http.StatusSeeOther)
 }
 
 func SettingsDelete(w http.ResponseWriter, r *http.Request) {
-    if r.Method == "POST" { // Prefer POST for state changing actions
-        if err := r.ParseForm(); err != nil {
-             http.Error(w, "Invalid request", http.StatusBadRequest)
-             return
-        }
-        
-        id := r.FormValue("id")
-        if err := database.DeleteWebsite(id); err != nil {
-             http.Error(w, "Database error", http.StatusInternalServerError)
-             return
-        }
-    }
-    http.Redirect(w, r, "/settings", http.StatusSeeOther)
+	if r.Method == "POST" { // Prefer POST for state changing actions
+		if err := r.ParseForm(); err != nil {
+			http.Error(w, "Invalid request", http.StatusBadRequest)
+			return
+		}
+
+		id := r.FormValue("id")
+		if err := database.DeleteWebsite(id); err != nil {
+			http.Error(w, "Database error", http.StatusInternalServerError)
+			return
+		}
+	}
+	http.Redirect(w, r, "/settings", http.StatusSeeOther)
 }
+
+func Events(w http.ResponseWriter, r *http.Request) {
+	// Set headers for SSE
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+    rc := http.NewResponseController(w)
+    
+	// Send initial ping
+	fmt.Fprintf(w, ": ping\n\n")
+    rc.Flush()
+
+    // Register client
+    eventChan := sseBroker.AddClient()
+    defer sseBroker.RemoveClient(eventChan)
+
+    // Client disconnected?
+	clientGone := r.Context().Done()
+    
+    // Heartbeat to keep connection open
+    ticker := time.NewTicker(15 * time.Second)
+    defer ticker.Stop()
+
+	for {
+		select {
+		case <-clientGone:
+			return
+        case <-ticker.C:
+            fmt.Fprintf(w, ": heartbeat\n\n")
+            rc.Flush()
+		case event := <-eventChan:
+			// Marshal event to JSON
+            data, err := json.Marshal(event)
+            if err != nil {
+                continue
+            }
+			fmt.Fprintf(w, "data: %s\n\n", data)
+			if err := rc.Flush(); err != nil {
+				return
+			}
+		}
+	}
+}
+

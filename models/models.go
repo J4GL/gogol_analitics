@@ -40,6 +40,7 @@ type TrafficPageData struct {
 	KeywordStats    []TableRow
 	DeviceStats     []TableRow
 	OSStats         []TableRow
+    RecentEvents    []Event
 }
 
 // SettingsPageData is data for the settings page
@@ -47,4 +48,26 @@ type SettingsPageData struct {
     CurrentPage string
 	Websites []Website
 	ScriptURL string
+}
+
+// Event represents a single traffic event (page view)
+type Event struct {
+	ID              int64     `json:"-"`
+	WebsiteID       string    `json:"website_id"` // Optional: for multi-site support
+	Timestamp       time.Time `json:"timestamp"`
+    VisitorID       string    `json:"visitor_id"`
+	Country         string    `json:"country"`
+	CountryCode     string    `json:"country_code"`
+	IP              string    `json:"ip"`
+	UserAgent       string    `json:"user_agent"`
+	ScreenResolution string   `json:"screen_resolution"`
+	Referrer        string    `json:"referrer"`
+	CurrentURL      string    `json:"current_url"`
+	IsBot           bool      `json:"is_bot"`
+    
+    // Derived fields (parsed server-side)
+    OS              string    `json:"os"`
+    Browser         string    `json:"browser"`
+    Device          string    `json:"device"`
+    Keyword         string    `json:"keyword"` // Extracted from referrer if search engine
 }
