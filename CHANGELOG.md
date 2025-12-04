@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Real-time Events table now positioned at the top of the traffic page for immediate visibility
+- Privacy-preserving IP address hashing using SHA256 with User-Agent as salt
+
+### Changed
+- IP addresses are now hashed before storage instead of storing plain text IPs
+- Real-time Events table displays truncated IP hash (first 12 characters) with full hash in tooltip
 
 ### Fixed
 - Invalid time format in Real-time Events table - now displays as HH:MM:SS instead of locale-dependent format
