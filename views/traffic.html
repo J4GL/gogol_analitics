@@ -48,6 +48,7 @@
                 <thead
                     class="text-xs text-gray-500 dark:text-gray-400 uppercase bg-gray-50 dark:bg-white/5 border-b border-gray-200/80 dark:border-white/10">
                     <tr>
+                        <th scope="col" class="px-4 py-3">IP Hash</th>
                         <th scope="col" class="px-4 py-3">Time</th>
                         <th scope="col" class="px-4 py-3">Country</th>
                         <th scope="col" class="px-4 py-3">Page</th>
@@ -57,7 +58,6 @@
                         <th scope="col" class="px-4 py-3">Browser</th>
                         <th scope="col" class="px-4 py-3">Resolution</th>
                         <th scope="col" class="px-4 py-3">Device</th>
-                        <th scope="col" class="px-4 py-3 text-right">IP Hash</th>
                     </tr>
                 </thead>
                 <tbody id="realtime-events-body">
@@ -393,6 +393,7 @@
         const sourceTLD = data.referrer ? extractTLD(data.referrer) : 'Direct';
 
         row.innerHTML = `
+            <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 truncate max-w-[120px]" title="${data.ip_hash}">${data.ip_hash ? data.ip_hash.substring(0, 12) + '...' : '-'}</td>
             <td class="px-4 py-2.5 text-black dark:text-white">${timeStr}</td>
             <td class="px-4 py-2.5 text-black dark:text-white">${data.country || '-'}</td>
             <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="${data.current_url}">${pagePath}</td>
@@ -402,7 +403,6 @@
             <td class="px-4 py-2.5 text-black dark:text-white">${data.browser}</td>
             <td class="px-4 py-2.5 text-black dark:text-white">${data.screen_resolution}</td>
             <td class="px-4 py-2.5 text-black dark:text-white">${data.device}</td>
-            <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right truncate max-w-[120px]" title="${data.ip_hash}">${data.ip_hash ? data.ip_hash.substring(0, 12) + '...' : '-'}</td>
         `;
 
         // Remove animation after a bit
