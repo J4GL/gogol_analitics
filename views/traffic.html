@@ -57,7 +57,7 @@
                         <th scope="col" class="px-4 py-3">Browser</th>
                         <th scope="col" class="px-4 py-3">Resolution</th>
                         <th scope="col" class="px-4 py-3">Device</th>
-                        <th scope="col" class="px-4 py-3 text-right">IP</th>
+                        <th scope="col" class="px-4 py-3 text-right">IP Hash</th>
                     </tr>
                 </thead>
                 <tbody id="realtime-events-body">
@@ -402,7 +402,7 @@
             <td class="px-4 py-2.5 text-black dark:text-white">${data.browser}</td>
             <td class="px-4 py-2.5 text-black dark:text-white">${data.screen_resolution}</td>
             <td class="px-4 py-2.5 text-black dark:text-white">${data.device}</td>
-            <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">${data.ip}</td>
+            <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right truncate max-w-[120px]" title="${data.ip_hash}">${data.ip_hash ? data.ip_hash.substring(0, 12) + '...' : '-'}</td>
         `;
 
         // Remove animation after a bit

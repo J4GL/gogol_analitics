@@ -180,20 +180,31 @@ func Track(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var event models.Event
-	if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
+	// Temporary struct to receive IP from client
+	var payload struct {
+		models.Event
+		IP string `json:"ip"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
 		http.Error(w, "Bad request", http.StatusBadRequest)
 		return
 	}
+
+	event := payload.Event
 
 	// Fill missing server-side fields
 	event.Timestamp = time.Now()
 	event.OS, event.Browser, event.Device = parseUA(event.UserAgent)
 	event.Keyword = parseKeyword(event.Referrer)
 
-	// Generate Visitor ID (IP + UserAgent)
-	hash := sha256.Sum256([]byte(event.IP + event.UserAgent))
-	event.VisitorID = hex.EncodeToString(hash[:])
+	// Hash IP with UserAgent as salt for privacy
+	// This creates a unique identifier while not storing the actual IP
+	hash := sha256.Sum256([]byte(payload.IP + event.UserAgent))
+	event.IPHash = hex.EncodeToString(hash[:])
+
+	// Use the same hash for VisitorID (IP + UserAgent uniquely identifies a visitor)
+	event.VisitorID = event.IPHash
 
 	// Save to DB
 	if err := database.InsertEvent(event); err != nil {
