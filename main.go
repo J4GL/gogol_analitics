@@ -23,7 +23,8 @@ func main() {
 	http.HandleFunc("/settings/add", controllers.SettingsAdd)
 	http.HandleFunc("/settings/delete", controllers.SettingsDelete)
 	http.HandleFunc("/api/events", controllers.Events)
-    http.HandleFunc("/api/track", controllers.Track)
+	http.HandleFunc("/api/track", controllers.Track)
+	http.HandleFunc("/api/track-noscript", controllers.TrackNoscript)
 
 	fmt.Println("Server starting on http://localhost:8091")
 	if err := http.ListenAndServe("127.0.0.1:8091", nil); err != nil {

@@ -14,7 +14,17 @@
         </div>
         <div class="p-6">
             <div class="rounded-md bg-gray-900 p-4 overflow-x-auto">
-                <pre class="text-green-400 text-sm font-mono">{{.ScriptURL}}</pre>
+                <pre class="text-green-400 text-sm font-mono">{{.ScriptURL}}
+&lt;noscript&gt;
+  &lt;img src="http://localhost:8091/api/track-noscript?u=YOUR_PAGE_URL&amp;r=REFERRER_URL" 
+       width="1" height="1" alt="" /&gt;
+&lt;/noscript&gt;</pre>
+            </div>
+            <div class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
+                <p class="text-sm text-blue-800 dark:text-blue-200">
+                    <strong>Note:</strong> The <code>&lt;noscript&gt;</code> tag provides fallback tracking for users with JavaScript disabled. 
+                    These visits are marked as bots and will show "unknown" for Country and Screen Resolution.
+                </p>
             </div>
         </div>
     </div>

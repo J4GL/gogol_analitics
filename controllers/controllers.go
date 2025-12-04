@@ -218,6 +218,89 @@ func Track(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
+// TrackNoscript handles tracking for users without JavaScript via image pixel
+func TrackNoscript(w http.ResponseWriter, r *http.Request) {
+	// CORS headers
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	if r.Method != "GET" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Extract server-side data
+	var event models.Event
+
+	// Get IP from request
+	ip := r.RemoteAddr
+	// Strip port if present
+	if idx := strings.LastIndex(ip, ":"); idx != -1 {
+		ip = ip[:idx]
+	}
+
+	// Get User-Agent from headers
+	event.UserAgent = r.Header.Get("User-Agent")
+	if event.UserAgent == "" {
+		event.UserAgent = "unknown"
+	}
+
+	// Get referrer and current URL from query params
+	event.Referrer = r.URL.Query().Get("r")
+	event.CurrentURL = r.URL.Query().Get("u")
+
+	// Set timestamp
+	event.Timestamp = time.Now()
+
+	// Parse User-Agent for OS, Browser, Device
+	event.OS, event.Browser, event.Device = parseUA(event.UserAgent)
+	event.Keyword = parseKeyword(event.Referrer)
+
+	// Set default values for fields that can't be obtained without JavaScript
+	event.Country = "unknown"
+	event.CountryCode = "unknown"
+	event.ScreenResolution = "unknown"
+
+	// Mark as bot (noscript users)
+	event.IsBot = true
+
+	// Hash IP with UserAgent as salt for privacy
+	hash := sha256.Sum256([]byte(ip + event.UserAgent))
+	event.IPHash = hex.EncodeToString(hash[:])
+	event.VisitorID = event.IPHash
+
+	// Save to DB
+	if err := database.InsertEvent(event); err != nil {
+		fmt.Printf("DB Error (noscript): %v\n", err)
+		// Don't fail the request, just log
+	}
+
+	// Broadcast to SSE
+	sseBroker.Broadcast(event)
+
+	// Return 1x1 transparent GIF
+	w.Header().Set("Content-Type", "image/gif")
+	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+	w.Header().Set("Pragma", "no-cache")
+	w.Header().Set("Expires", "0")
+
+	// 1x1 transparent GIF (43 bytes)
+	gif := []byte{
+		0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00,
+		0x01, 0x00, 0x80, 0x00, 0x00, 0xFF, 0xFF, 0xFF,
+		0x00, 0x00, 0x00, 0x21, 0xF9, 0x04, 0x01, 0x00,
+		0x00, 0x00, 0x00, 0x2C, 0x00, 0x00, 0x00, 0x00,
+		0x01, 0x00, 0x01, 0x00, 0x00, 0x02, 0x02, 0x44,
+		0x01, 0x00, 0x3B,
+	}
+	w.Write(gif)
+}
+
 func Traffic(w http.ResponseWriter, r *http.Request) {
 	timeRange := r.URL.Query().Get("range")
 	if timeRange == "" {
