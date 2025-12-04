@@ -73,6 +73,12 @@ func InsertEvent(e models.Event) error {
 	return err
 }
 
+// ClearAllEvents deletes all events from the database
+func ClearAllEvents() error {
+	_, err := DB.Exec("DELETE FROM events")
+	return err
+}
+
 // GetChartData retrieves traffic data for the chart based on the time range
 func GetChartData(timeRange string) ([]models.ChartDataPoint, error) {
 	var points int
