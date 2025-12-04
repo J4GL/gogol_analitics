@@ -1,18 +1,18 @@
 package controllers
 
 import (
-    "crypto/sha256"
-    "encoding/hex"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"gogol_analytics/database"
 	"gogol_analytics/models"
 	"html/template"
 	"net/http"
-    "net/url"
+	"net/url"
 	"path/filepath"
-    "strings"
-    "sync"
+	"strings"
+	"sync"
 	"time"
 )
 
@@ -65,108 +65,146 @@ func parseTemplates(templates ...string) (*template.Template, error) {
 }
 
 func parseUA(ua string) (os, browser, device string) {
-    // Simple heuristics
-    ua = strings.ToLower(ua)
-    
-    // OS
-    if strings.Contains(ua, "windows") {
-        os = "Windows"
-    } else if strings.Contains(ua, "macintosh") {
-        os = "macOS"
-    } else if strings.Contains(ua, "android") {
-        os = "Android"
-    } else if strings.Contains(ua, "iphone") || strings.Contains(ua, "ipad") {
-        os = "iOS"
-    } else if strings.Contains(ua, "linux") {
-        os = "Linux"
-    } else {
-        os = "Unknown"
-    }
+	// Simple heuristics
+	ua = strings.ToLower(ua)
 
-    // Browser
-    if strings.Contains(ua, "edg/") {
-        browser = "Edge"
-    } else if strings.Contains(ua, "chrome/") {
-        browser = "Chrome"
-    } else if strings.Contains(ua, "firefox/") {
-        browser = "Firefox"
-    } else if strings.Contains(ua, "safari/") {
-        browser = "Safari"
-    } else {
-        browser = "Other"
-    }
+	// OS
+	if strings.Contains(ua, "windows") {
+		os = "Windows"
+	} else if strings.Contains(ua, "macintosh") {
+		os = "macOS"
+	} else if strings.Contains(ua, "android") {
+		os = "Android"
+	} else if strings.Contains(ua, "iphone") || strings.Contains(ua, "ipad") {
+		os = "iOS"
+	} else if strings.Contains(ua, "linux") {
+		os = "Linux"
+	} else {
+		os = "Unknown"
+	}
 
-    // Device
-    if strings.Contains(ua, "mobile") || strings.Contains(ua, "android") || strings.Contains(ua, "iphone") {
-        device = "Mobile"
-    } else if strings.Contains(ua, "ipad") || strings.Contains(ua, "tablet") {
-        device = "Tablet"
-    } else {
-        device = "Desktop"
-    }
-    
-    return
+	// Browser
+	if strings.Contains(ua, "edg/") {
+		browser = "Edge"
+	} else if strings.Contains(ua, "chrome/") {
+		browser = "Chrome"
+	} else if strings.Contains(ua, "firefox/") {
+		browser = "Firefox"
+	} else if strings.Contains(ua, "safari/") {
+		browser = "Safari"
+	} else {
+		browser = "Other"
+	}
+
+	// Device
+	if strings.Contains(ua, "mobile") || strings.Contains(ua, "android") || strings.Contains(ua, "iphone") {
+		device = "Mobile"
+	} else if strings.Contains(ua, "ipad") || strings.Contains(ua, "tablet") {
+		device = "Tablet"
+	} else {
+		device = "Desktop"
+	}
+
+	return
 }
 
 func parseKeyword(referrer string) string {
-    if referrer == "" {
-        return ""
-    }
-    u, err := url.Parse(referrer)
-    if err != nil {
-        return ""
-    }
-    // Check common query params
-    q := u.Query().Get("q")
-    if q != "" { return q }
-    p := u.Query().Get("p") // Yahoo
-    if p != "" { return p }
-    return ""
+	if referrer == "" {
+		return ""
+	}
+	u, err := url.Parse(referrer)
+	if err != nil {
+		return ""
+	}
+	// Check common query params
+	q := u.Query().Get("q")
+	if q != "" {
+		return q
+	}
+	p := u.Query().Get("p") // Yahoo
+	if p != "" {
+		return p
+	}
+	return ""
+}
+
+func extractPath(urlStr string) string {
+	if urlStr == "" {
+		return "/"
+	}
+	u, err := url.Parse(urlStr)
+	if err != nil {
+		return urlStr // Return original if can't parse
+	}
+	path := u.Path
+	if path == "" {
+		return "/"
+	}
+	return path
+}
+
+func extractTLD(urlStr string) string {
+	if urlStr == "" || urlStr == "Direct" {
+		return urlStr
+	}
+	u, err := url.Parse(urlStr)
+	if err != nil {
+		return urlStr // Return original if can't parse
+	}
+	host := u.Host
+	if host == "" {
+		host = u.Path // Sometimes URLs are just domains
+	}
+	// Remove port if present
+	if idx := strings.Index(host, ":"); idx != -1 {
+		host = host[:idx]
+	}
+	return host
 }
 
 // --- Handlers ---
 
 func Track(w http.ResponseWriter, r *http.Request) {
-    // CORS headers
-    w.Header().Set("Access-Control-Allow-Origin", "*")
-    w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
-    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	// CORS headers
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-    if r.Method == "OPTIONS" {
-        w.WriteHeader(http.StatusOK)
-        return
-    }
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
 
-    if r.Method != "POST" {
-        http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-        return
-    }
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 
-    var event models.Event
-    if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
-        http.Error(w, "Bad request", http.StatusBadRequest)
-        return
-    }
-    
-    // Fill missing server-side fields
-    event.Timestamp = time.Now()
-    event.OS, event.Browser, event.Device = parseUA(event.UserAgent)
-    event.Keyword = parseKeyword(event.Referrer)
-    
-    // Generate Visitor ID (IP + UserAgent)
-    hash := sha256.Sum256([]byte(event.IP + event.UserAgent))
-    event.VisitorID = hex.EncodeToString(hash[:])
+	var event models.Event
+	if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
+		http.Error(w, "Bad request", http.StatusBadRequest)
+		return
+	}
 
-    // Save to DB
-    if err := database.InsertEvent(event); err != nil {
-        fmt.Printf("DB Error: %v\n", err)
-        // Don't fail the request, just log
-    }
-    
-    // Broadcast to SSE
-    sseBroker.Broadcast(event)
-    
-    w.WriteHeader(http.StatusNoContent)
+	// Fill missing server-side fields
+	event.Timestamp = time.Now()
+	event.OS, event.Browser, event.Device = parseUA(event.UserAgent)
+	event.Keyword = parseKeyword(event.Referrer)
+
+	// Generate Visitor ID (IP + UserAgent)
+	hash := sha256.Sum256([]byte(event.IP + event.UserAgent))
+	event.VisitorID = hex.EncodeToString(hash[:])
+
+	// Save to DB
+	if err := database.InsertEvent(event); err != nil {
+		fmt.Printf("DB Error: %v\n", err)
+		// Don't fail the request, just log
+	}
+
+	// Broadcast to SSE
+	sseBroker.Broadcast(event)
+
+	w.WriteHeader(http.StatusNoContent)
 }
 
 func Traffic(w http.ResponseWriter, r *http.Request) {
@@ -176,46 +214,63 @@ func Traffic(w http.ResponseWriter, r *http.Request) {
 	}
 
 	chartData, err := database.GetChartData(timeRange)
-    if err != nil {
-        fmt.Printf("Error getting chart data: %v\n", err)
-    }
-    
-    // Helper to get stats safely
-    getStats := func(col string) []models.TableRow {
-        s, err := database.GetTopStats(col, 10)
-        if err != nil {
-            fmt.Printf("Error getting stats for %s: %v\n", col, err)
-            return []models.TableRow{}
-        }
-        return s
-    }
+	if err != nil {
+		fmt.Printf("Error getting chart data: %v\n", err)
+	}
 
-    // Get recent events
-    recentEvents, err := database.GetRecentEvents(20)
-    if err != nil {
-        fmt.Printf("Error getting recent events: %v\n", err)
-    }
+	// Helper to get stats safely
+	getStats := func(col string) []models.TableRow {
+		s, err := database.GetTopStats(col, 10)
+		if err != nil {
+			fmt.Printf("Error getting stats for %s: %v\n", col, err)
+			return []models.TableRow{}
+		}
+		return s
+	}
 
-    // Get source stats specifically to handle "Direct"
-    sourceStats, err := database.GetTopSources(10)
-    if err != nil {
-         fmt.Printf("Error getting source stats: %v\n", err)
-    }
+	// Get recent events
+	recentEvents, err := database.GetRecentEvents(20)
+	if err != nil {
+		fmt.Printf("Error getting recent events: %v\n", err)
+	}
+
+	// Get source stats specifically to handle "Direct"
+	sourceStats, err := database.GetTopSources(10)
+	if err != nil {
+		fmt.Printf("Error getting source stats: %v\n", err)
+	}
+
+	// Process page stats to show only path
+	pageStats := getStats("current_url")
+	for i := range pageStats {
+		pageStats[i].Key = extractPath(pageStats[i].Key)
+	}
+
+	// Process source stats to show only TLD
+	for i := range sourceStats {
+		sourceStats[i].Key = extractTLD(sourceStats[i].Key)
+	}
+
+	// Process referring sites to show only TLD
+	referringSitesStats := getStats("referrer")
+	for i := range referringSitesStats {
+		referringSitesStats[i].Key = extractTLD(referringSitesStats[i].Key)
+	}
 
 	data := models.TrafficPageData{
 		CurrentPage:         "traffic",
 		TimeRange:           timeRange,
 		ChartData:           chartData,
-		PageStats:           getStats("current_url"),
+		PageStats:           pageStats,
 		CountryStats:        getStats("country"),
 		DeviceStats:         getStats("device"),
 		OSStats:             getStats("os"),
 		SourceStats:         sourceStats,
-		ReferringSitesStats: getStats("referrer"), // Keep generic for specific sites (excludes Direct)
+		ReferringSitesStats: referringSitesStats,
 		BrowserStats:        getStats("browser"),
 		ResolutionStats:     getStats("screen_resolution"),
 		KeywordStats:        getStats("keyword"),
-        RecentEvents:        recentEvents,
+		RecentEvents:        recentEvents,
 	}
 
 	tmpl, err := parseTemplates("layout.html", "traffic.html")
@@ -304,36 +359,36 @@ func Events(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Connection", "keep-alive")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-    rc := http.NewResponseController(w)
-    
+	rc := http.NewResponseController(w)
+
 	// Send initial ping
 	fmt.Fprintf(w, ": ping\n\n")
-    rc.Flush()
+	rc.Flush()
 
-    // Register client
-    eventChan := sseBroker.AddClient()
-    defer sseBroker.RemoveClient(eventChan)
+	// Register client
+	eventChan := sseBroker.AddClient()
+	defer sseBroker.RemoveClient(eventChan)
 
-    // Client disconnected?
+	// Client disconnected?
 	clientGone := r.Context().Done()
-    
-    // Heartbeat to keep connection open
-    ticker := time.NewTicker(15 * time.Second)
-    defer ticker.Stop()
+
+	// Heartbeat to keep connection open
+	ticker := time.NewTicker(15 * time.Second)
+	defer ticker.Stop()
 
 	for {
 		select {
 		case <-clientGone:
 			return
-        case <-ticker.C:
-            fmt.Fprintf(w, ": heartbeat\n\n")
-            rc.Flush()
+		case <-ticker.C:
+			fmt.Fprintf(w, ": heartbeat\n\n")
+			rc.Flush()
 		case event := <-eventChan:
 			// Marshal event to JSON
-            data, err := json.Marshal(event)
-            if err != nil {
-                continue
-            }
+			data, err := json.Marshal(event)
+			if err != nil {
+				continue
+			}
 			fmt.Fprintf(w, "data: %s\n\n", data)
 			if err := rc.Flush(); err != nil {
 				return
@@ -341,4 +396,3 @@ func Events(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
-

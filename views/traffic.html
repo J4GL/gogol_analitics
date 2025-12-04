@@ -247,26 +247,16 @@
                         <th scope="col" class="px-4 py-3">Country</th>
                         <th scope="col" class="px-4 py-3">Page</th>
                         <th scope="col" class="px-4 py-3">Source</th>
+                        <th scope="col" class="px-4 py-3">Keyword</th>
+                        <th scope="col" class="px-4 py-3">OS</th>
+                        <th scope="col" class="px-4 py-3">Browser</th>
+                        <th scope="col" class="px-4 py-3">Resolution</th>
                         <th scope="col" class="px-4 py-3">Device</th>
-                        <th scope="col" class="px-4 py-3">Type</th>
                         <th scope="col" class="px-4 py-3 text-right">IP</th>
                     </tr>
                 </thead>
                 <tbody id="realtime-events-body">
-                    {{range .RecentEvents}}
-                    <tr class="border-b border-gray-200/80 dark:border-white/10 last:border-0">
-                        <td class="px-4 py-2.5 text-black dark:text-white">{{.Timestamp.Format "15:04:05"}}</td>
-                        <td class="px-4 py-2.5 text-black dark:text-white">{{if .Country}}{{.Country}}{{else}}-{{end}}</td>
-                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="{{.CurrentURL}}">{{.CurrentURL}}</td>
-                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]" title="{{.Referrer}}">{{if .Referrer}}{{.Referrer}}{{else}}Direct{{end}}</td>
-                        <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]">{{if .Keyword}}{{.Keyword}}{{else}}-{{end}}</td>
-                        <td class="px-4 py-2.5 text-black dark:text-white">{{.OS}}</td>
-                        <td class="px-4 py-2.5 text-black dark:text-white">{{.Browser}}</td>
-                        <td class="px-4 py-2.5 text-black dark:text-white">{{.ScreenResolution}}</td>
-                        <td class="px-4 py-2.5 text-black dark:text-white">{{.Device}}</td>
-                        <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-right">{{.IP}}</td>
-                    </tr>
-                    {{end}}
+                    <!-- Events will be populated via SSE and auto-removed after 7 seconds -->
                 </tbody>
             </table>
         </div>
@@ -356,20 +346,54 @@
     const eventSource = new EventSource('/api/events');
     const tableBody = document.getElementById('realtime-events-body');
 
+    // Helper functions to match backend processing
+    function extractPath(urlStr) {
+        if (!urlStr) return '/';
+        try {
+            const url = new URL(urlStr);
+            return url.pathname || '/';
+        } catch (e) {
+            return urlStr; // Return original if can't parse
+        }
+    }
+
+    function extractTLD(urlStr) {
+        if (!urlStr || urlStr === 'Direct') return urlStr;
+        try {
+            const url = new URL(urlStr);
+            let host = url.host || url.pathname;
+            // Remove port if present
+            const colonIdx = host.indexOf(':');
+            if (colonIdx !== -1) {
+                host = host.substring(0, colonIdx);
+            }
+            return host;
+        } catch (e) {
+            return urlStr; // Return original if can't parse
+        }
+    }
+
     eventSource.onmessage = function (event) {
         const data = JSON.parse(event.data);
         const row = document.createElement('tr');
         row.className = "border-b border-gray-200/80 dark:border-white/10 last:border-0 animate-pulse";
 
-        // Format timestamp
-        const date = new Date(data.Timestamp);
-        const timeStr = date.toLocaleTimeString();
+        // Format timestamp as HH:MM:SS
+        const date = new Date(data.timestamp);
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        const timeStr = `${hours}:${minutes}:${seconds}`;
+
+        // Extract page path and source TLD
+        const pagePath = extractPath(data.current_url);
+        const sourceTLD = data.referrer ? extractTLD(data.referrer) : 'Direct';
 
         row.innerHTML = `
             <td class="px-4 py-2.5 text-black dark:text-white">${timeStr}</td>
             <td class="px-4 py-2.5 text-black dark:text-white">${data.country || '-'}</td>
-            <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="${data.current_url}">${data.current_url}</td>
-            <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]" title="${data.referrer}">${data.referrer || 'Direct'}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[150px]" title="${data.current_url}">${pagePath}</td>
+            <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]" title="${data.referrer || 'Direct'}">${sourceTLD}</td>
             <td class="px-4 py-2.5 text-black dark:text-white truncate max-w-[100px]">${data.keyword || '-'}</td>
             <td class="px-4 py-2.5 text-black dark:text-white">${data.os}</td>
             <td class="px-4 py-2.5 text-black dark:text-white">${data.browser}</td>
@@ -385,11 +409,27 @@
 
         tableBody.insertBefore(row, tableBody.firstChild);
 
-        // Limit rows
+        // Auto-remove row after 7 seconds
+        const removeTimeout = setTimeout(() => {
+            if (row.parentNode === tableBody) {
+                row.remove();
+            }
+        }, 7000);
+
+        // Store timeout ID on the row element for potential cleanup
+        row.dataset.removeTimeout = removeTimeout;
+
+        // Limit rows to 20 (in case auto-removal doesn't keep up)
         if (tableBody.children.length > 20) {
-            tableBody.removeChild(tableBody.lastChild);
+            const lastRow = tableBody.lastChild;
+            // Clear the timeout if it exists
+            if (lastRow.dataset.removeTimeout) {
+                clearTimeout(parseInt(lastRow.dataset.removeTimeout));
+            }
+            tableBody.removeChild(lastRow);
         }
     };
+
 
 </script>
 {{end}}
